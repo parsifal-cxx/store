@@ -33,8 +33,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
+        }
     }
     buildFeatures {
         compose = true
@@ -57,4 +59,25 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    implementation(libs.androidx.compose.material.icons.extended)
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
+    // Supabase
+    implementation(platform(libs.bom))
+    implementation(libs.postgrest.kt)
+    implementation(libs.gotrue.kt)
+    implementation(libs.supabase.realtime.kt)
+    implementation(libs.storage.kt)
+    // Ktor Client (для Supabase)
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.utils)
+    // Kotlinx Serialization
+    implementation(libs.kotlinx.serialization.json)
+    // Coil для загрузки изображений
+    implementation(libs.coil.compose)
+    // Coroutines
+    implementation(libs.kotlinx.coroutines.android)
+
 }
