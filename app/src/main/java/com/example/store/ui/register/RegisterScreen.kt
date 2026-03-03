@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.store.R
+import com.example.store.ui.components.StoreTextField
 import com.example.store.ui.theme.StoreTheme
 
 /** Экран регистрации. Дата: 03.03.2026, Автор: Бубнов Никита */
@@ -58,13 +60,11 @@ fun RegisterScreen(
         }
 
         AlertDialog(
-            onDismissRequest = { /* закрытие только по кнопке */ },
+            onDismissRequest = { },
             title = { Text(stringResource(R.string.error_title)) },
             text = { Text(msg) },
             confirmButton = {
-                TextButton(onClick = vm::dismissError) {
-                    Text(stringResource(R.string.ok))
-                }
+                TextButton(onClick = vm::dismissError) { Text(stringResource(R.string.ok)) }
             }
         )
     }
@@ -87,7 +87,7 @@ fun RegisterScreen(
     )
 }
 
-/** UI регистрации без ViewModel (для Preview). Дата: 03.03.2026, Автор: Бубнов Никита */
+/** UI регистрации без ViewModel (Preview). Дата: 03.03.2026, Автор: Бубнов Никита */
 @Composable
 fun RegisterContent(
     fullName: String,
@@ -105,17 +105,28 @@ fun RegisterContent(
     onRegisterClick: () -> Unit,
     onSignInClick: () -> Unit
 ) {
-    val fieldShape = RoundedCornerShape(14.dp)
-    val fieldBg = Color(0xFFF2F2F2)
-    val primaryBtn = Color(0xFF2C6F89)
+    val bg = colorResource(R.color.brand_background)
+    val fieldBg = colorResource(R.color.brand_sub_text_light)
 
-    Box(Modifier.fillMaxSize().background(Color.White)) {
+    val textPrimary = colorResource(R.color.brand_text)
+    val textSecondary = colorResource(R.color.brand_sub_text_dark)
+
+    val iconPrimary = colorResource(R.color.brand_text)
+    val iconSecondary = colorResource(R.color.brand_hint)
+
+    val btnActive = colorResource(R.color.brand_accent)
+    val btnDisabled = colorResource(R.color.brand_disable)
+    val btnText = colorResource(R.color.brand_block)
+
+    val shape = RoundedCornerShape(14.dp)
+
+    Box(Modifier.fillMaxSize().background(bg)) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 24.dp)
         ) {
-            Spacer(Modifier.height(40.dp))
+            Spacer(Modifier.height(48.dp))
 
             Surface(
                 modifier = Modifier.size(40.dp),
@@ -127,7 +138,7 @@ fun RegisterContent(
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                         contentDescription = stringResource(R.string.cd_back),
-                        tint = Color(0xFF1F1F1F)
+                        tint = iconPrimary
                     )
                 }
             }
@@ -137,46 +148,40 @@ fun RegisterContent(
             Text(
                 text = stringResource(R.string.register_title),
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                style = TextStyle(fontSize = 22.sp, color = Color(0xFF1F1F1F))
+                style = TextStyle(fontSize = 22.sp, color = textPrimary)
             )
             Spacer(Modifier.height(6.dp))
             Text(
                 text = stringResource(R.string.register_subtitle),
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                style = TextStyle(fontSize = 12.sp, color = Color(0xFF9E9E9E))
+                style = TextStyle(fontSize = 12.sp, color = textSecondary)
             )
 
             Spacer(Modifier.height(28.dp))
 
-            LabelAndField(
+            StoreTextField(
                 label = stringResource(R.string.name_label),
-                value = fullName,
                 placeholder = stringResource(R.string.name_placeholder),
-                onValueChange = onFullNameChange,
-                shape = fieldShape,
-                bg = fieldBg
+                value = fullName,
+                onValueChange = onFullNameChange
             )
 
             Spacer(Modifier.height(14.dp))
 
-            LabelAndField(
+            StoreTextField(
                 label = stringResource(R.string.email_label),
-                value = email,
                 placeholder = stringResource(R.string.email_placeholder),
-                onValueChange = onEmailChange,
-                shape = fieldShape,
-                bg = fieldBg
+                value = email,
+                onValueChange = onEmailChange
             )
 
             Spacer(Modifier.height(14.dp))
 
-            LabelAndField(
+            StoreTextField(
                 label = stringResource(R.string.password_label),
-                value = password,
                 placeholder = stringResource(R.string.password_placeholder),
+                value = password,
                 onValueChange = onPasswordChange,
-                shape = fieldShape,
-                bg = fieldBg,
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 trailingIcon = {
                     IconButton(onClick = onTogglePassword) {
@@ -185,7 +190,7 @@ fun RegisterContent(
                             contentDescription = stringResource(
                                 if (passwordVisible) R.string.cd_hide_password else R.string.cd_show_password
                             ),
-                            tint = Color(0xFF9E9E9E)
+                            tint = iconSecondary
                         )
                     }
                 }
@@ -199,13 +204,18 @@ fun RegisterContent(
                     .clickable { onAgreeChange(!agree) },
                 verticalAlignment = Alignment.Top
             ) {
-                CircleCheck(checked = agree, modifier = Modifier.padding(top = 3.dp))
+                CircleCheck(
+                    checked = agree,
+                    modifier = Modifier.padding(top = 3.dp),
+                    borderColor = iconPrimary,
+                    fillColor = iconPrimary
+                )
                 Spacer(Modifier.width(10.dp))
                 Text(
                     text = stringResource(R.string.agree_personal_data),
                     style = TextStyle(
                         fontSize = 12.sp,
-                        color = Color(0xFF9E9E9E),
+                        color = textSecondary,
                         textDecoration = TextDecoration.Underline
                     )
                 )
@@ -219,10 +229,12 @@ fun RegisterContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(52.dp),
-                shape = fieldShape,
+                shape = shape,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = primaryBtn,
-                    disabledContainerColor = primaryBtn.copy(alpha = 0.45f)
+                    containerColor = btnActive,
+                    contentColor = btnText,
+                    disabledContainerColor = btnDisabled,
+                    disabledContentColor = btnText
                 )
             ) {
                 Text(text = stringResource(R.string.register_button), fontSize = 12.sp)
@@ -238,11 +250,11 @@ fun RegisterContent(
             ) {
                 Text(
                     text = stringResource(R.string.have_account) + " ",
-                    style = TextStyle(fontSize = 12.sp, color = Color(0xFF9E9E9E))
+                    style = TextStyle(fontSize = 12.sp, color = textSecondary)
                 )
                 Text(
                     text = stringResource(R.string.sign_in_link),
-                    style = TextStyle(fontSize = 12.sp, color = Color(0xFF1F1F1F)),
+                    style = TextStyle(fontSize = 12.sp, color = textPrimary),
                     modifier = Modifier.clickable(onClick = onSignInClick)
                 )
             }
@@ -250,65 +262,31 @@ fun RegisterContent(
 
         if (loading) {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(color = btnActive)
             }
         }
     }
 }
 
 @Composable
-private fun LabelAndField(
-    label: String,
-    value: String,
-    placeholder: String,
-    onValueChange: (String) -> Unit,
-    shape: RoundedCornerShape,
-    bg: Color,
-    trailingIcon: (@Composable (() -> Unit))? = null,
-    visualTransformation: VisualTransformation = VisualTransformation.None
-) {
-    Text(text = label, style = TextStyle(fontSize = 12.sp, color = Color(0xFF6B6B6B)))
-    Spacer(Modifier.height(6.dp))
-    TextField(
-        value = value,
-        onValueChange = onValueChange,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(52.dp),
-        placeholder = { Text(placeholder, fontSize = 12.sp, color = Color(0xFFB3B3B3)) },
-        singleLine = true,
-        trailingIcon = trailingIcon,
-        visualTransformation = visualTransformation,
-        shape = shape,
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = bg,
-            unfocusedContainerColor = bg,
-            disabledContainerColor = bg,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent,
-            cursorColor = Color(0xFF1F1F1F)
-        )
-    )
-}
-
-@Composable
 private fun CircleCheck(
     checked: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    borderColor: Color,
+    fillColor: Color
 ) {
     Surface(
         modifier = modifier.size(16.dp),
         shape = CircleShape,
         color = Color.Transparent,
-        border = BorderStroke(1.dp, Color(0xFF1F1F1F))
+        border = BorderStroke(1.dp, borderColor)
     ) {
         if (checked) {
             Box(contentAlignment = Alignment.Center) {
                 Surface(
                     modifier = Modifier.size(8.dp),
                     shape = CircleShape,
-                    color = Color(0xFF1F1F1F)
+                    color = fillColor
                 ) {}
             }
         }
@@ -317,7 +295,7 @@ private fun CircleCheck(
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-private fun RegisterContentPreview() {
+private fun RegisterPreview() {
     StoreTheme {
         RegisterContent(
             fullName = "",

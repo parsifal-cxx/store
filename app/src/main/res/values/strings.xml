@@ -43,12 +43,12 @@
     <string name="sign_in_link">Войти</string>
 
     <!-- Sign In -->
-    <string name="sign_in_title">Вход</string>
-    <string name="sign_in_subtitle">Добро пожаловать</string>
-    <string name="sign_in_button">Войти</string>
+    <string name="sign_in_title">Привет!</string>
+    <string name="sign_in_subtitle">Заполните Свои Данные</string>
     <string name="forgot_password_link">Восстановить</string>
-    <string name="no_account">Нет аккаунта?</string>
-    <string name="create_user_link">Создать пользователя</string>
+    <string name="sign_in_button">Войти</string>
+    <string name="no_account">Вы впервые?</string>
+    <string name="create_user_link">Создать</string>
 
     <!-- Forgot Password -->
     <string name="forgot_password_title">Восстановление пароля</string>

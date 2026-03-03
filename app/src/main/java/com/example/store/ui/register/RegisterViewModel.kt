@@ -46,6 +46,7 @@ class RegisterViewModel : ViewModel() {
             _error.value = UiText.Res(R.string.error_empty_fields)
             return
         }
+
         if (!emailRegex.matches(e)) {
             _error.value = UiText.Res(R.string.error_invalid_email)
             return

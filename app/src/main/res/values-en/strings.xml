@@ -43,12 +43,12 @@
     <string name="sign_in_link">Sign in</string>
 
     <!-- Sign In -->
-    <string name="sign_in_title">Sign In</string>
-    <string name="sign_in_subtitle">Welcome back</string>
-    <string name="sign_in_button">Sign In</string>
+    <string name="sign_in_title">Hi!</string>
+    <string name="sign_in_subtitle">Fill in your details</string>
     <string name="forgot_password_link">Recover</string>
-    <string name="no_account">Don\'t have an account?</string>
-    <string name="create_user_link">Create user</string>
+    <string name="sign_in_button">Sign In</string>
+    <string name="no_account">First time?</string>
+    <string name="create_user_link">Create</string>
 
     <!-- Forgot Password -->
     <string name="forgot_password_title">Forgot password</string>
