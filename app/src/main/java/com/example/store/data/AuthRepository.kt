@@ -4,14 +4,17 @@ import io.github.jan.supabase.gotrue.OtpType
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.gotrue.providers.builtin.Email
 
-
- //Работа с аутентификацией пользователей
+/**
+ * Автор - Бубнов Никита
+ * Дата - 03.03.2026
+ * Работа с аутентификацией пользователей */
 
 class AuthRepository {
 
     // Получаем доступ к модулю аутентификации
     private val auth = SupabaseClient.client.auth
 
+    //Регистрация
     suspend fun signUp(email: String, password: String): Result<Unit> {
         return try {
             auth.signUpWith(Email) {
@@ -24,6 +27,7 @@ class AuthRepository {
         }
     }
 
+    //Авторизация
     suspend fun signIn(email: String, password: String): Result<Unit> {
         return try {
             auth.signInWith(Email) {

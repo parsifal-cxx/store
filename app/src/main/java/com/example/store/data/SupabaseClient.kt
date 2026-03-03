@@ -6,11 +6,9 @@ import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.storage.Storage
 
 /**
+ * Автор - Бубнов Никита
+ * Дата - 03.03.2026
  * Клиент для работы с Supabase
- * Предоставляет доступ к:
- * - Auth (аутентификация)
- * - Postgrest (база данных)
- * - Storage (хранилище файлов)
  */
 object SupabaseClient {
 
