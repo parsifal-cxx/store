@@ -1,45 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Общее -->
-    <string name="app_name">Store</string>
-    <string name="error_title">Ошибка</string>
+    <!-- App -->
+    <string name="app_name">store</string>
+
+    <!-- Common -->
     <string name="ok">OK</string>
     <string name="back">Назад</string>
+    <string name="error_title">Ошибка</string>
 
-    <!-- Ошибки -->
+    <!-- Content descriptions -->
+    <string name="cd_back">Назад</string>
+    <string name="cd_show_password">Показать пароль</string>
+    <string name="cd_hide_password">Скрыть пароль</string>
+
+    <!-- Validation / Errors -->
     <string name="error_invalid_email">Некорректный email</string>
     <string name="error_empty_fields">Заполните все поля</string>
     <string name="error_passwords_not_match">Пароли не совпадают</string>
     <string name="error_no_internet">Нет подключения к интернету</string>
     <string name="error_unknown">Неизвестная ошибка</string>
+    <string name="error_registration_failed">Ошибка регистрации</string>
+    <string name="error_login_failed">Ошибка входа</string>
+    <string name="error_wrong_code">Неверный код</string>
 
-    <!-- Register Account -->
-    <string name="register_title">Register Account</string>
-    <string name="register_subtitle">Заполните свои данные или продолжите через социальные сети</string>
+    <!-- Register -->
+    <string name="register_title">Регистрация</string>
+    <string name="register_subtitle">Заполните Свои Данные</string>
+
+    <string name="name_label">Ваше имя</string>
+    <string name="name_placeholder">xxxxxxxx</string>
+
     <string name="email_label">Email</string>
+    <string name="email_placeholder">xyz@gmail.com</string>
+
     <string name="password_label">Пароль</string>
-    <string name="agree_terms">Я соглашаюсь с </string>
-    <string name="terms_and_policy">Условиями и политикой конфиденциальности</string>
+    <string name="password_placeholder">••••••••</string>
+
+    <string name="agree_personal_data">Даю согласие на обработку\nперсональных данных</string>
+
     <string name="register_button">Зарегистрироваться</string>
-    <string name="already_have_account">Уже есть аккаунт? </string>
+    <string name="have_account">Есть аккаунт?</string>
     <string name="sign_in_link">Войти</string>
 
     <!-- Sign In -->
-    <string name="sign_in_title">Sign In</string>
-    <string name="sign_in_subtitle">Добро пожаловать обратно</string>
+    <string name="sign_in_title">Вход</string>
+    <string name="sign_in_subtitle">Добро пожаловать</string>
     <string name="sign_in_button">Войти</string>
     <string name="forgot_password_link">Восстановить</string>
-    <string name="no_account">Нет аккаунта? </string>
+    <string name="no_account">Нет аккаунта?</string>
     <string name="create_user_link">Создать пользователя</string>
 
     <!-- Forgot Password -->
-    <string name="forgot_password_title">Forgot Password</string>
+    <string name="forgot_password_title">Восстановление пароля</string>
     <string name="forgot_password_subtitle">Введите свой email для восстановления пароля</string>
     <string name="send_button">Отправить</string>
     <string name="email_sent_title">Проверьте почту</string>
-    <string name="email_sent_message">Мы отправили код восстановления на ваш email</string>
+    <string name="email_sent_message">Мы отправили код на ваш email</string>
 
-    <!-- OTP Verification -->
+    <!-- Verification (OTP) -->
     <string name="verification_title">Verification</string>
     <string name="verification_subtitle">Введите код, отправленный на ваш email</string>
     <string name="resend_code">Отправить повторно</string>

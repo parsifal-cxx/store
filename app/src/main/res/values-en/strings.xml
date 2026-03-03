@@ -1,53 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- App -->
+    <string name="app_name">store</string>
+
     <!-- Common -->
-    <string name="app_name">Store</string>
-    <string name="error_title">Error</string>
     <string name="ok">OK</string>
     <string name="back">Back</string>
+    <string name="error_title">Error</string>
 
-    <!-- Errors -->
+    <!-- Content descriptions -->
+    <string name="cd_back">Back</string>
+    <string name="cd_show_password">Show password</string>
+    <string name="cd_hide_password">Hide password</string>
+
+    <!-- Validation / Errors -->
     <string name="error_invalid_email">Invalid email</string>
     <string name="error_empty_fields">Please fill in all fields</string>
     <string name="error_passwords_not_match">Passwords do not match</string>
     <string name="error_no_internet">No internet connection</string>
     <string name="error_unknown">Unknown error</string>
+    <string name="error_registration_failed">Registration failed</string>
+    <string name="error_login_failed">Login failed</string>
+    <string name="error_wrong_code">Wrong code</string>
 
-    <!-- Register Account -->
-    <string name="register_title">Register Account</string>
-    <string name="register_subtitle">Fill in your details or continue via social media</string>
+    <!-- Register -->
+    <string name="register_title">Register</string>
+    <string name="register_subtitle">Fill in your details</string>
+
+    <string name="name_label">Your name</string>
+    <string name="name_placeholder">xxxxxxxx</string>
+
     <string name="email_label">Email</string>
+    <string name="email_placeholder">xyz@gmail.com</string>
+
     <string name="password_label">Password</string>
-    <string name="agree_terms">I agree to the </string>
-    <string name="terms_and_policy">Terms and Privacy Policy</string>
+    <string name="password_placeholder">••••••••</string>
+
+    <string name="agree_personal_data">I agree to the processing of personal data</string>
+
     <string name="register_button">Register</string>
-    <string name="already_have_account">Already have an account? </string>
-    <string name="sign_in_link">Sign In</string>
+    <string name="have_account">Have an account?</string>
+    <string name="sign_in_link">Sign in</string>
 
     <!-- Sign In -->
     <string name="sign_in_title">Sign In</string>
     <string name="sign_in_subtitle">Welcome back</string>
     <string name="sign_in_button">Sign In</string>
     <string name="forgot_password_link">Recover</string>
-    <string name="no_account">Don\'t have an account? </string>
-    <string name="create_user_link">Create User</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="create_user_link">Create user</string>
 
     <!-- Forgot Password -->
-    <string name="forgot_password_title">Forgot Password</string>
-    <string name="forgot_password_subtitle">Enter your email to recover your password</string>
+    <string name="forgot_password_title">Forgot password</string>
+    <string name="forgot_password_subtitle">Enter your email to reset password</string>
     <string name="send_button">Send</string>
     <string name="email_sent_title">Check your email</string>
-    <string name="email_sent_message">We have sent a recovery code to your email</string>
+    <string name="email_sent_message">We sent a code to your email</string>
 
-    <!-- OTP Verification -->
+    <!-- Verification (OTP) -->
     <string name="verification_title">Verification</string>
     <string name="verification_subtitle">Enter the code sent to your email</string>
-    <string name="resend_code">Resend code</string>
+    <string name="resend_code">Resend</string>
     <string name="resend_code_timer">Resend in %1$s</string>
 
     <!-- Create New Password -->
     <string name="new_password_title">Create New Password</string>
-    <string name="new_password_subtitle">Enter your new password</string>
+    <string name="new_password_subtitle">Enter a new password</string>
     <string name="new_password_label">New password</string>
     <string name="confirm_password_label">Confirm password</string>
     <string name="save_button">Save</string>
