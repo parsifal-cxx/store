@@ -124,7 +124,7 @@ fun RegisterContent(
                 .fillMaxSize()
                 .padding(horizontal = 24.dp)
         ) {
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(64.dp))
 
             Surface(
                 modifier = Modifier.size(40.dp),
