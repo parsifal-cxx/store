@@ -15,12 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.store.R
 import com.example.store.ui.components.StoreTextField
@@ -81,7 +79,7 @@ fun SignInScreen(
     )
 }
 
-/** UI входа без ViewModel (Preview). Дата: 03.03.2026, Автор: Бубнов Никита */
+/** UI входа (Preview). Дата: 03.03.2026, Автор: Бубнов Никита */
 @Composable
 fun SignInContent(
     email: String,
@@ -117,7 +115,7 @@ fun SignInContent(
                 .fillMaxSize()
                 .padding(horizontal = 24.dp)
         ) {
-            Spacer(Modifier.height(48.dp))
+            Spacer(Modifier.height(16.dp))
 
             Surface(
                 modifier = Modifier.size(40.dp),
@@ -138,14 +136,16 @@ fun SignInContent(
 
             Text(
                 text = stringResource(R.string.sign_in_title),
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                style = TextStyle(fontSize = 24.sp, color = textPrimary)
+                style = MaterialTheme.typography.headlineLarge,
+                color = textPrimary,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Spacer(Modifier.height(6.dp))
             Text(
                 text = stringResource(R.string.sign_in_subtitle),
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                style = TextStyle(fontSize = 12.sp, color = textSecondary)
+                style = MaterialTheme.typography.labelSmall,
+                color = textSecondary,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
             Spacer(Modifier.height(34.dp))
@@ -183,7 +183,8 @@ fun SignInContent(
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                 Text(
                     text = stringResource(R.string.forgot_password_link),
-                    style = TextStyle(fontSize = 12.sp, color = textSecondary),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = textSecondary,
                     modifier = Modifier.clickable(onClick = onForgotClick)
                 )
             }
@@ -204,7 +205,7 @@ fun SignInContent(
                     disabledContentColor = btnText
                 )
             ) {
-                Text(text = stringResource(R.string.sign_in_button), fontSize = 12.sp)
+                Text(text = stringResource(R.string.sign_in_button), style = MaterialTheme.typography.labelLarge)
             }
 
             Spacer(Modifier.weight(1f))
@@ -217,11 +218,13 @@ fun SignInContent(
             ) {
                 Text(
                     text = stringResource(R.string.no_account) + " ",
-                    style = TextStyle(fontSize = 12.sp, color = textSecondary)
+                    style = MaterialTheme.typography.labelSmall,
+                    color = textSecondary
                 )
                 Text(
                     text = stringResource(R.string.create_user_link),
-                    style = TextStyle(fontSize = 12.sp, color = textPrimary),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = textPrimary,
                     modifier = Modifier.clickable(onClick = onCreateClick)
                 )
             }
