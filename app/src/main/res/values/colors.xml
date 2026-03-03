@@ -8,4 +8,5 @@
     <color name="brand_text">#2B2B2B</color>
     <color name="brand_hint">#6A6A6A</color>
     <color name="brand_sub_text_dark">#707B81</color>
+    <color name="brand_red">#F87265</color>
 </resources>

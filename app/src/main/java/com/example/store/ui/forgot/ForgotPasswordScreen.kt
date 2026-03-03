@@ -1,14 +1,11 @@
 package com.example.store.ui.forgot
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,6 +20,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.store.R
 import com.example.store.ui.components.StoreTextField
 import com.example.store.ui.theme.StoreTheme
+import kotlinx.coroutines.delay
 
 /** Экран восстановления пароля. Дата: 03.03.2026, Автор: Бубнов Никита */
 @Composable
@@ -53,6 +51,16 @@ fun ForgotPasswordScreen(
         )
     }
 
+    LaunchedEffect(sentDialog) {
+        if (sentDialog) {
+            delay(4000)
+            if (vm.sentDialog.value) {
+                vm.dismissSentDialog()
+                onNavigateToVerification(email.trim())
+            }
+        }
+    }
+
     if (sentDialog) {
         EmailSentDialog(
             onClick = {
@@ -71,7 +79,7 @@ fun ForgotPasswordScreen(
     )
 }
 
-/** UI восстановления пароля (Preview). Дата: 03.03.2026, Автор: Бубнов Никита */
+/** UI восстановления пароля. Дата: 03.03.2026, Автор: Бубнов Никита */
 @Composable
 fun ForgotPasswordContent(
     email: String,
@@ -174,9 +182,7 @@ fun ForgotPasswordContent(
 }
 
 @Composable
-private fun EmailSentDialog(
-    onClick: () -> Unit
-) {
+private fun EmailSentDialog(onClick: () -> Unit) {
     val border = colorResource(R.color.brand_accent)
     val cardBg = colorResource(R.color.brand_block)
     val textPrimary = colorResource(R.color.brand_text)
@@ -184,42 +190,23 @@ private fun EmailSentDialog(
 
     Dialog(onDismissRequest = { }) {
         Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable(onClick = onClick),
+            modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
             color = cardBg,
-            border = BorderStroke(2.dp, border)
+            border = androidx.compose.foundation.BorderStroke(2.dp, border),
+            onClick = onClick
         ) {
             Column(
                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 18.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Surface(
-                    shape = CircleShape,
-                    color = border,
-                    modifier = Modifier.size(44.dp)
-                ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        Icon(
-                            imageVector = Icons.Outlined.Email,
-                            contentDescription = null,
-                            tint = cardBg
-                        )
-                    }
-                }
-
-                Spacer(Modifier.height(12.dp))
-
                 Text(
                     text = stringResource(R.string.email_sent_title),
                     style = MaterialTheme.typography.headlineSmall,
                     color = textPrimary,
                     textAlign = TextAlign.Center
                 )
-
                 Spacer(Modifier.height(8.dp))
-
                 Text(
                     text = stringResource(R.string.email_sent_message),
                     style = MaterialTheme.typography.labelSmall,

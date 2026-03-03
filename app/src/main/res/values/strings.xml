@@ -59,15 +59,14 @@
     <string name="email_sent_message">Мы Отправили Код Восстановления\nПароля На Вашу Электронную Почту.</string>
 
     <!-- Verification (OTP) -->
-    <string name="verification_title">Verification</string>
-    <string name="verification_subtitle">Введите код, отправленный на ваш email</string>
-    <string name="resend_code">Отправить повторно</string>
-    <string name="resend_code_timer">Отправить повторно через %1$s</string>
+    <string name="otp_title">OTP Проверка</string>
+    <string name="otp_subtitle">Пожалуйста, Проверьте Свою\nЭлектронную Почту, Чтобы Увидеть Код\nПодтверждения</string>
+    <string name="otp_code_label">OTP Код</string>
+    <string name="resend_again">Отправить заново</string>
 
     <!-- Create New Password -->
-    <string name="new_password_title">Create New Password</string>
-    <string name="new_password_subtitle">Введите новый пароль</string>
-    <string name="new_password_label">Новый пароль</string>
-    <string name="confirm_password_label">Подтвердите пароль</string>
+    <string name="new_password_title">Задать Новый Пароль</string>
+    <string name="new_password_subtitle">Установите Новый Пароль Для Входа В\nВашу Учетную Запись</string>
+    <string name="confirm_password_label">Подтверждение пароля</string>
     <string name="save_button">Сохранить</string>
 </resources>

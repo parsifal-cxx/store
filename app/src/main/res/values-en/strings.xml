@@ -59,15 +59,14 @@
     <string name="email_sent_message">We sent a password recovery code\nto your email.</string>
 
     <!-- Verification (OTP) -->
-    <string name="verification_title">Verification</string>
-    <string name="verification_subtitle">Enter the code sent to your email</string>
-    <string name="resend_code">Resend</string>
-    <string name="resend_code_timer">Resend in %1$s</string>
+    <string name="otp_title">OTP Verification</string>
+    <string name="otp_subtitle">Please check your email\nto see the verification code</string>
+    <string name="otp_code_label">OTP Code</string>
+    <string name="resend_again">Resend</string>
 
     <!-- Create New Password -->
-    <string name="new_password_title">Create New Password</string>
-    <string name="new_password_subtitle">Enter a new password</string>
-    <string name="new_password_label">New password</string>
+    <string name="new_password_title">Set New Password</string>
+    <string name="new_password_subtitle">Set a new password to sign in\nto your account</string>
     <string name="confirm_password_label">Confirm password</string>
     <string name="save_button">Save</string>
 </resources>
