@@ -21,6 +21,7 @@ class VerificationViewModel : ViewModel() {
     }
 
     private val repo = AuthRepository()
+    private val digitsCount = 6
 
     private val _loading = MutableStateFlow(false)
     val loading: StateFlow<Boolean> = _loading
@@ -31,17 +32,18 @@ class VerificationViewModel : ViewModel() {
     private val _code = MutableStateFlow("")
     val code: StateFlow<String> = _code
 
-    private val _codeError = MutableStateFlow(false)
-    val codeError: StateFlow<Boolean> = _codeError
-
     private val _secondsLeft = MutableStateFlow(60)
     val secondsLeft: StateFlow<Int> = _secondsLeft
+
+    private val _blinkAll = MutableStateFlow(false)
+    val blinkAll: StateFlow<Boolean> = _blinkAll
 
     private val _verified = MutableStateFlow(false)
     val verified: StateFlow<Boolean> = _verified
 
     private var email: String = ""
     private var timerJob: Job? = null
+    private var blinkJob: Job? = null
 
     fun dismissError() {
         _error.value = null
@@ -58,14 +60,20 @@ class VerificationViewModel : ViewModel() {
     }
 
     fun onCodeChange(value: String) {
-        val filtered = value.filter { it.isDigit() }.take(6)
+        blinkJob?.cancel()
+        _blinkAll.value = false
+
+        val filtered = value.filter { it.isDigit() }.take(digitsCount)
         _code.value = filtered
-        if (_codeError.value) _codeError.value = false
-        if (filtered.length == 6) verify(filtered)
+
+        if (filtered.length == digitsCount) {
+            verify(filtered)
+        }
     }
 
     fun resend() {
         if (_secondsLeft.value > 0) return
+
         viewModelScope.launch {
             _loading.value = true
             val result = repo.resetPassword(email)
@@ -73,7 +81,6 @@ class VerificationViewModel : ViewModel() {
 
             if (result.isSuccess) {
                 _code.value = ""
-                _codeError.value = false
                 startTimer(60)
             } else {
                 val ex = result.exceptionOrNull()
@@ -95,8 +102,21 @@ class VerificationViewModel : ViewModel() {
             if (result.isSuccess) {
                 _verified.value = true
             } else {
-                _codeError.value = true
+                blinkWrongCode()
             }
+        }
+    }
+
+    private fun blinkWrongCode() {
+        blinkJob?.cancel()
+        blinkJob = viewModelScope.launch {
+            repeat(2) {
+                _blinkAll.value = true
+                delay(180)
+                _blinkAll.value = false
+                delay(180)
+            }
+            _code.value = ""
         }
     }
 

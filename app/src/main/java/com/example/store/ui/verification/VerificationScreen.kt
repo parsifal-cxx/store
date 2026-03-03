@@ -1,6 +1,7 @@
 package com.example.store.ui.verification
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,6 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -37,8 +40,8 @@ fun VerificationScreen(
     val loading by vm.loading.collectAsState()
     val error by vm.error.collectAsState()
     val code by vm.code.collectAsState()
-    val codeError by vm.codeError.collectAsState()
     val secondsLeft by vm.secondsLeft.collectAsState()
+    val blinkAll by vm.blinkAll.collectAsState()
     val verified by vm.verified.collectAsState()
 
     LaunchedEffect(email) { vm.init(email) }
@@ -68,7 +71,7 @@ fun VerificationScreen(
 
     VerificationContent(
         code = code,
-        codeError = codeError,
+        blinkAll = blinkAll,
         secondsLeft = secondsLeft,
         loading = loading,
         onBack = onBack,
@@ -81,7 +84,7 @@ fun VerificationScreen(
 @Composable
 fun VerificationContent(
     code: String,
-    codeError: Boolean,
+    blinkAll: Boolean,
     secondsLeft: Int,
     loading: Boolean,
     onBack: () -> Unit,
@@ -93,6 +96,7 @@ fun VerificationContent(
     val textPrimary = colorResource(R.color.brand_text)
     val textSecondary = colorResource(R.color.brand_sub_text_dark)
     val hint = colorResource(R.color.brand_hint)
+    val accent = colorResource(R.color.brand_accent)
     val red = colorResource(R.color.brand_red)
 
     val keyboard = LocalSoftwareKeyboardController.current
@@ -153,8 +157,12 @@ fun VerificationContent(
 
             OtpInput(
                 code = code,
-                codeError = codeError,
+                blinkAll = blinkAll,
                 secondsLeft = secondsLeft,
+                blockColor = block,
+                red = red,
+                hint = hint,
+                textPrimary = textPrimary,
                 onCodeChange = onCodeChange,
                 onResend = onResend,
                 focusRequester = focusRequester
@@ -168,7 +176,7 @@ fun VerificationContent(
 
         if (loading) {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(color = colorResource(R.color.brand_accent))
+                CircularProgressIndicator(color = accent)
             }
         }
     }
@@ -177,20 +185,24 @@ fun VerificationContent(
 @Composable
 private fun OtpInput(
     code: String,
-    codeError: Boolean,
+    blinkAll: Boolean,
     secondsLeft: Int,
+    blockColor: Color,
+    red: Color,
+    hint: Color,
+    textPrimary: Color,
     onCodeChange: (String) -> Unit,
     onResend: () -> Unit,
     focusRequester: FocusRequester
 ) {
-    val block = colorResource(R.color.brand_block)
-    val red = colorResource(R.color.brand_red)
-    val hint = colorResource(R.color.brand_hint)
-    val textPrimary = colorResource(R.color.brand_text)
-
     val digitsCount = 6
+    val cellShape = RoundedCornerShape(12.dp)
 
-    Column {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { focusRequester.requestFocus() }
+    ) {
         Box {
             BasicTextField(
                 value = code,
@@ -201,8 +213,8 @@ private fun OtpInput(
                     .focusRequester(focusRequester),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
                 singleLine = true,
-                textStyle = TextStyle(color = androidx.compose.ui.graphics.Color.Transparent),
-                cursorBrush = androidx.compose.ui.graphics.SolidColor(androidx.compose.ui.graphics.Color.Transparent)
+                textStyle = TextStyle(color = Color.Transparent),
+                cursorBrush = SolidColor(Color.Transparent)
             )
 
             Row(
@@ -212,19 +224,20 @@ private fun OtpInput(
             ) {
                 for (i in 0 until digitsCount) {
                     val ch = code.getOrNull(i)?.toString() ?: ""
-                    val isCurrent = i == code.length && code.length < digitsCount
+                    val isActiveCell = code.length < digitsCount && i == code.length
+
                     val borderColor = when {
-                        codeError -> red
-                        isCurrent -> red
-                        else -> androidx.compose.ui.graphics.Color.Transparent
+                        blinkAll -> red
+                        isActiveCell -> red
+                        else -> Color.Transparent
                     }
 
                     Surface(
                         modifier = Modifier
-                            .width(44.dp)
-                            .height(64.dp),
-                        color = block,
-                        shape = RoundedCornerShape(12.dp),
+                            .weight(1f)
+                            .aspectRatio(44f / 64f),
+                        color = blockColor,
+                        shape = cellShape,
                         border = androidx.compose.foundation.BorderStroke(2.dp, borderColor)
                     ) {
                         Box(contentAlignment = Alignment.Center) {
@@ -236,32 +249,32 @@ private fun OtpInput(
                         }
                     }
                 }
-
-                Spacer(Modifier.weight(1f))
-
-                if (secondsLeft > 0) {
-                    Text(
-                        text = formatTime(secondsLeft),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = hint,
-                        modifier = Modifier.padding(end = 2.dp)
-                    )
-                }
             }
         }
 
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(12.dp))
 
-        if (secondsLeft <= 0) {
-            TextButton(
-                onClick = onResend,
-                contentPadding = PaddingValues(0.dp)
-            ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ) {
+            if (secondsLeft > 0) {
                 Text(
-                    text = stringResource(R.string.resend_again),
+                    text = formatTime(secondsLeft),
                     style = MaterialTheme.typography.labelSmall,
                     color = hint
                 )
+            } else {
+                TextButton(
+                    onClick = onResend,
+                    contentPadding = PaddingValues(0.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.resend_again),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = hint
+                    )
+                }
             }
         }
     }
@@ -278,9 +291,9 @@ private fun formatTime(totalSeconds: Int): String {
 private fun VerificationPreview() {
     StoreTheme {
         VerificationContent(
-            code = "00000",
-            codeError = false,
-            secondsLeft = 30,
+            code = "123",
+            blinkAll = false,
+            secondsLeft = 42,
             loading = false,
             onBack = {},
             onCodeChange = {},
