@@ -24,6 +24,7 @@ fun StoreTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    showLabel: Boolean = true,
     trailingIcon: (@Composable (() -> Unit))? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
@@ -33,12 +34,14 @@ fun StoreTextField(
     val fieldBg = colorResource(R.color.brand_sub_text_light)
     val textColor = colorResource(R.color.brand_text)
 
-    Text(
-        text = label,
-        style = MaterialTheme.typography.labelSmall,
-        color = labelColor
-    )
-    Spacer(Modifier.height(6.dp))
+    if (showLabel && label.isNotBlank()) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = labelColor
+        )
+        Spacer(Modifier.height(6.dp))
+    }
 
     TextField(
         value = value,

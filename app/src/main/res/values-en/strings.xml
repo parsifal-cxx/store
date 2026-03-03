@@ -51,11 +51,12 @@
     <string name="create_user_link">Create</string>
 
     <!-- Forgot Password -->
-    <string name="forgot_password_title">Forgot password</string>
-    <string name="forgot_password_subtitle">Enter your email to reset password</string>
+    <string name="forgot_password_title">Forgot Password</string>
+    <string name="forgot_password_subtitle">Enter your account\nfor reset</string>
     <string name="send_button">Send</string>
-    <string name="email_sent_title">Check your email</string>
-    <string name="email_sent_message">We sent a code to your email</string>
+
+    <string name="email_sent_title">Check your Email</string>
+    <string name="email_sent_message">We sent a password recovery code\nto your email.</string>
 
     <!-- Verification (OTP) -->
     <string name="verification_title">Verification</string>
