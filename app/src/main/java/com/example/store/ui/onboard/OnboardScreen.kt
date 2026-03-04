@@ -18,10 +18,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.store.R
 import kotlinx.coroutines.launch
@@ -61,33 +63,34 @@ fun OnboardScreen(
     val btnBg = colorResource(R.color.brand_block)
     val btnText = colorResource(R.color.brand_hint)
 
+    val horizontalPadding = 24.dp
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(bgBrush)
-            .padding(horizontal = 24.dp)
     ) {
         HorizontalPager(
             state = pagerState,
             modifier = Modifier.fillMaxSize()
         ) { page ->
-            val offset = ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction)
+            val offset = (pagerState.currentPage - page) + pagerState.currentPageOffsetFraction
             OnboardPage(
+                pageIndex = page,
                 data = pages[page],
-                pageOffset = offset
+                pageOffset = offset,
+                horizontalPadding = horizontalPadding
             )
         }
 
         Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
+                .padding(horizontal = horizontalPadding)
                 .padding(bottom = 28.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            PagerIndicator(
-                current = pagerState.currentPage,
-                count = pages.size
-            )
+            PagerIndicator(current = pagerState.currentPage, count = pages.size)
 
             Spacer(Modifier.height(22.dp))
 
@@ -132,8 +135,10 @@ private data class OnboardPageData(
 
 @Composable
 private fun OnboardPage(
+    pageIndex: Int,
     data: OnboardPageData,
-    pageOffset: Float
+    pageOffset: Float,
+    horizontalPadding: Dp
 ) {
     val abs = pageOffset.absoluteValue
     val alpha = (1f - abs).coerceIn(0f, 1f)
@@ -141,53 +146,152 @@ private fun OnboardPage(
     val titleColor = colorResource(R.color.brand_block)
     val subtitleColor = colorResource(R.color.brand_block).copy(alpha = 0.65f)
 
+    val topPadding = if (pageIndex == 0) 96.dp else 120.dp
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 64.dp),
+            .padding(top = topPadding),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = painterResource(data.imageRes),
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .graphicsLayer {
-                    this.alpha = alpha
-                    translationX = -pageOffset * 80f
-                    translationY = abs * 20f
-                }
-        )
+        if (pageIndex == 0) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = horizontalPadding),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                OnboardTextBlock(
+                    titleRes = data.titleRes,
+                    subtitleRes = data.subtitleRes,
+                    titleStyle = MaterialTheme.typography.displayMedium,
+                    subtitleStyle = MaterialTheme.typography.labelSmall,
+                    alpha = alpha,
+                    absOffset = abs,
+                    titleColor = titleColor,
+                    subtitleColor = subtitleColor
+                )
+            }
 
-        Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(44.dp))
 
+            OnboardImage(
+                imageRes = data.imageRes,
+                alpha = alpha,
+                pageOffset = pageOffset,
+                absOffset = abs,
+                horizontalPadding = 0.dp,
+                height = 340.dp,
+                alignment = Alignment.Center,
+                contentScale = ContentScale.FillWidth,
+                extraDownOffset = 64.dp
+            )
+        } else {
+            OnboardImage(
+                imageRes = data.imageRes,
+                alpha = alpha,
+                pageOffset = pageOffset,
+                absOffset = abs,
+                horizontalPadding = horizontalPadding,
+                height = 300.dp,
+                alignment = Alignment.Center,
+                contentScale = ContentScale.Fit,
+                extraDownOffset = 18.dp
+            )
+
+            Spacer(Modifier.height(28.dp))
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = horizontalPadding),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                OnboardTextBlock(
+                    titleRes = data.titleRes,
+                    subtitleRes = data.subtitleRes,
+                    titleStyle = MaterialTheme.typography.displaySmall,
+                    subtitleStyle = MaterialTheme.typography.labelSmall,
+                    alpha = alpha,
+                    absOffset = abs,
+                    titleColor = titleColor,
+                    subtitleColor = subtitleColor,
+                    extraDownOffset = 16.dp
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun OnboardImage(
+    @DrawableRes imageRes: Int,
+    alpha: Float,
+    pageOffset: Float,
+    absOffset: Float,
+    horizontalPadding: Dp,
+    height: Dp,
+    alignment: Alignment,
+    contentScale: ContentScale,
+    extraDownOffset: Dp
+) {
+    Image(
+        painter = painterResource(imageRes),
+        contentDescription = null,
+        alignment = alignment,
+        contentScale = contentScale,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = horizontalPadding)
+            .height(height)
+            .offset(y = extraDownOffset)
+            .graphicsLayer {
+                this.alpha = alpha
+                translationX = -pageOffset * 80f
+                translationY = absOffset * 20f
+            }
+    )
+}
+
+@Composable
+private fun OnboardTextBlock(
+    @StringRes titleRes: Int,
+    @StringRes subtitleRes: Int?,
+    titleStyle: androidx.compose.ui.text.TextStyle,
+    subtitleStyle: androidx.compose.ui.text.TextStyle,
+    alpha: Float,
+    absOffset: Float,
+    titleColor: androidx.compose.ui.graphics.Color,
+    subtitleColor: androidx.compose.ui.graphics.Color,
+    extraDownOffset: Dp = 0.dp
+) {
+    Text(
+        text = stringResource(titleRes),
+        style = titleStyle,
+        color = titleColor,
+        textAlign = TextAlign.Center,
+        modifier = Modifier
+            .offset(y = extraDownOffset)
+            .graphicsLayer {
+                this.alpha = alpha
+                translationY = absOffset * 24f
+            }
+    )
+
+    if (subtitleRes != null) {
+        Spacer(Modifier.height(10.dp))
         Text(
-            text = stringResource(data.titleRes),
-            style = MaterialTheme.typography.headlineLarge,
-            color = titleColor,
+            text = stringResource(subtitleRes),
+            style = subtitleStyle,
+            color = subtitleColor,
             textAlign = TextAlign.Center,
             modifier = Modifier
+                .offset(y = extraDownOffset)
                 .graphicsLayer {
                     this.alpha = alpha
-                    translationY = abs * 24f
+                    translationY = absOffset * 24f
                 }
         )
-
-        if (data.subtitleRes != null) {
-            Spacer(Modifier.height(10.dp))
-            Text(
-                text = stringResource(data.subtitleRes),
-                style = MaterialTheme.typography.labelSmall,
-                color = subtitleColor,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .graphicsLayer {
-                        this.alpha = alpha
-                        translationY = abs * 24f
-                    }
-            )
-        }
     }
 }
 
