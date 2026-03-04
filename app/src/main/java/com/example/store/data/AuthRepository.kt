@@ -3,7 +3,6 @@ package com.example.store.data
 import io.github.jan.supabase.gotrue.OtpType
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.gotrue.providers.builtin.Email
-
 /**
  * Автор - Бубнов Никита
  * Дата - 03.03.2026
@@ -70,7 +69,7 @@ class AuthRepository {
 
     suspend fun updatePassword(newPassword: String): Result<Unit> {
         return try {
-            auth.updateUser {
+            auth.modifyUser {
                 password = newPassword
             }
             Result.success(Unit)

@@ -64,16 +64,16 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.extended)
     // Navigation
     implementation(libs.androidx.navigation.compose)
-    // Supabase
-    implementation(platform(libs.bom))
-    implementation(libs.supabase.postgrest.kt)
-    implementation(libs.supabase.gotrue.kt)
-    implementation(libs.supabase.storage.kt)
-    implementation(libs.github.realtime.kt)
-    // Ktor Client (для Supabase)
-    implementation(libs.ktor.client.android)
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.utils)
+    // Supabase (все модули одной версии)
+    implementation(platform("io.github.jan-tennert.supabase:bom:2.1.4"))
+    implementation("io.github.jan-tennert.supabase:supabase-kt")
+    implementation("io.github.jan-tennert.supabase:gotrue-kt")
+    implementation("io.github.jan-tennert.supabase:postgrest-kt")
+    implementation("io.github.jan-tennert.supabase:storage-kt")
+
+    // Ktor (для Supabase)
+    implementation("io.ktor:ktor-client-android:2.3.7")
+    implementation("io.ktor:ktor-client-core:2.3.7")
     // Kotlinx Serialization
     implementation(libs.kotlinx.serialization.json)
     // Coil для загрузки изображений
