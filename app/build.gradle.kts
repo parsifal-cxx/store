@@ -60,8 +60,10 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+    implementation("androidx.core:core-splashscreen:1.2.0")
 
     implementation(libs.androidx.compose.material.icons.extended)
+    implementation("com.google.android.material:material:1.13.0")
     // Navigation
     implementation(libs.androidx.navigation.compose)
     // Supabase (все модули одной версии)

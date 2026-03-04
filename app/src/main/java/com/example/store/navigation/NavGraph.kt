@@ -12,7 +12,6 @@ import com.example.store.ui.newpassword.CreateNewPasswordScreen
 import com.example.store.ui.onboard.OnboardScreen
 import com.example.store.ui.register.RegisterScreen
 import com.example.store.ui.signin.SignInScreen
-import com.example.store.ui.splash.SplashScreen
 import com.example.store.ui.verification.VerificationScreen
 
 /** Граф навигации приложения. Дата: 04.03.2026, Автор: Бубнов Никита */
@@ -22,18 +21,9 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.Splash.route,
+        startDestination = Screen.Onboard.route,
         modifier = modifier
     ) {
-        composable(Screen.Splash.route) {
-            SplashScreen(
-                onFinished = {
-                    navController.navigate(Screen.Onboard.route) {
-                        popUpTo(Screen.Splash.route) { inclusive = true }
-                    }
-                }
-            )
-        }
 
         composable(Screen.Onboard.route) {
             OnboardScreen(
