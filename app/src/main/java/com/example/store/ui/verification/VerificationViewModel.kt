@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.store.R
 import com.example.store.data.AuthRepository
+import com.example.store.utils.AuthErrorMapper
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -83,12 +84,8 @@ class VerificationViewModel : ViewModel() {
                 _code.value = ""
                 startTimer(60)
             } else {
-                val ex = result.exceptionOrNull()
-                _error.value = when (ex) {
-                    is UnknownHostException -> UiText.Res(R.string.error_no_internet)
-                    else -> ex?.message?.takeIf { it.isNotBlank() }?.let { UiText.Dynamic(it) }
-                        ?: UiText.Res(R.string.error_unknown)
-                }
+                val id = AuthErrorMapper.toMessageId(result.exceptionOrNull(), R.string.error_unknown)
+                _error.value = UiText.Res(id)
             }
         }
     }

@@ -69,4 +69,12 @@
     <string name="new_password_subtitle">Set a new password to sign in\nto your account</string>
     <string name="confirm_password_label">Confirm password</string>
     <string name="save_button">Save</string>
+
+    <!-- Error Mapper -->
+    <string name="error_secure_connection">Secure connection error</string>
+    <string name="error_server">Server error</string>
+    <string name="error_bad_request">Invalid data</string>
+    <string name="error_user_already_registered">User already registered</string>
+    <string name="error_invalid_credentials">Invalid email or password</string>
+    <string name="error_too_many_requests">Too many requests. Try again later</string>
 </resources>

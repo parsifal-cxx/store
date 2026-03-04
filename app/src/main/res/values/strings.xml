@@ -69,4 +69,12 @@
     <string name="new_password_subtitle">Установите Новый Пароль Для Входа В\nВашу Учетную Запись</string>
     <string name="confirm_password_label">Подтверждение пароля</string>
     <string name="save_button">Сохранить</string>
+
+    <!-- Error Mapper -->
+    <string name="error_secure_connection">Ошибка защищённого соединения</string>
+    <string name="error_server">Ошибка сервера</string>
+    <string name="error_bad_request">Неверные данные</string>
+    <string name="error_user_already_registered">Пользователь уже зарегистрирован</string>
+    <string name="error_invalid_credentials">Неверный email или пароль</string>
+    <string name="error_too_many_requests">Слишком много запросов. Попробуйте позже</string>
 </resources>

@@ -54,7 +54,6 @@ fun RegisterScreen(
     error?.let { err ->
         val msg = when (err) {
             is RegisterViewModel.UiText.Res -> stringResource(err.id)
-            is RegisterViewModel.UiText.Dynamic -> err.value
         }
 
         AlertDialog(

@@ -51,7 +51,6 @@ fun SignInScreen(
     error?.let { err ->
         val msg = when (err) {
             is SignInViewModel.UiText.Res -> stringResource(err.id)
-            is SignInViewModel.UiText.Dynamic -> err.value
         }
 
         AlertDialog(

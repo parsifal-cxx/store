@@ -5,21 +5,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.store.R
 import com.example.store.data.AuthRepository
+import com.example.store.utils.AuthErrorMapper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.net.UnknownHostException
 
 /** ViewModel входа. Дата: 03.03.2026, Автор: Бубнов Никита */
 class SignInViewModel : ViewModel() {
 
     sealed class UiText {
         data class Res(@StringRes val id: Int) : UiText()
-        data class Dynamic(val value: String) : UiText()
     }
 
     private val repo = AuthRepository()
-    private val emailRegex = Regex("^[a-z0-9]+@[a-z0-9]+\\.[a-z]{3,}$")
+    private val emailRegex = Regex("^[a-z0-9]+@[a-z0-9]+\\.[a-z]{2,}$")
 
     private val _loading = MutableStateFlow(false)
     val loading: StateFlow<Boolean> = _loading
@@ -60,12 +59,11 @@ class SignInViewModel : ViewModel() {
             if (result.isSuccess) {
                 _success.value = true
             } else {
-                val ex = result.exceptionOrNull()
-                _error.value = when (ex) {
-                    is UnknownHostException -> UiText.Res(R.string.error_no_internet)
-                    else -> ex?.message?.takeIf { it.isNotBlank() }?.let { UiText.Dynamic(it) }
-                        ?: UiText.Res(R.string.error_login_failed)
-                }
+                val id = AuthErrorMapper.toMessageId(
+                    throwable = result.exceptionOrNull(),
+                    defaultId = R.string.error_login_failed
+                )
+                _error.value = UiText.Res(id)
             }
         }
     }
