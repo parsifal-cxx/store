@@ -77,4 +77,17 @@
     <string name="error_user_already_registered">User already registered</string>
     <string name="error_invalid_credentials">Invalid email or password</string>
     <string name="error_too_many_requests">Too many requests. Try again later</string>
+
+    <!-- Onboard -->
+    <string name="onboard_1_title">WELCOME</string>
+    <string name="onboard_btn_start">Start</string>
+    <string name="onboard_btn_next">Next</string>
+    <string name="onboard_btn_done">Done</string>
+
+    <string name="onboard_2_title">Let’s start\nthe journey</string>
+    <string name="onboard_2_subtitle">Smart, gorgeous and modern\ncollection. Explore now</string>
+
+    <string name="onboard_3_title">You Have The Power,\nTo</string>
+    <string name="onboard_3_subtitle">make your room full of beautiful\nand attractive plants</string>
+
 </resources>

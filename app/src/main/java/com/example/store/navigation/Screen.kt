@@ -2,8 +2,11 @@ package com.example.store.navigation
 
 import android.net.Uri
 
-/** Маршруты навигации. Дата: 03.03.2026, Автор: Бубнов Никита */
+/** Маршруты навигации. Дата: 04.03.2026, Автор: Бубнов Никита */
 sealed class Screen(val route: String) {
+    data object Splash : Screen("splash")
+    data object Onboard : Screen("onboard")
+
     data object SignIn : Screen("sign_in")
     data object Register : Screen("register")
     data object ForgotPassword : Screen("forgot_password")
