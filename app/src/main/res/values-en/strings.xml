@@ -90,4 +90,15 @@
     <string name="onboard_3_title">You Have The Power,\nTo</string>
     <string name="onboard_3_subtitle">make your room full of beautiful\nand attractive plants</string>
 
+    <string name="home_title">Home</string>
+    <string name="search_hint">Search</string>
+    <string name="categories_title">Categories</string>
+    <string name="popular_title">Popular</string>
+    <string name="promo_title">Promotions</string>
+    <string name="all">All</string>
+    <string name="best_seller">BEST SELLER</string>
+    <string name="product_name_nike_air_max">Nike Air Max</string>
+    <string name="price_rub_752">₽752.00</string>
+    <string name="summer_sale">Summer Sale</string>
+    <string name="off_15">15% OFF</string>
 </resources>

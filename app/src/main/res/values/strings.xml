@@ -90,4 +90,15 @@
     <string name="onboard_3_title">У Вас Есть Сила,\nЧтобы</string>
     <string name="onboard_3_subtitle">в вашей комнате много красивых и\nпривлекательных растений</string>
 
+    <string name="home_title">Главная</string>
+    <string name="search_hint">Поиск</string>
+    <string name="categories_title">Категории</string>
+    <string name="popular_title">Популярное</string>
+    <string name="promo_title">Акции</string>
+    <string name="all">Все</string>
+    <string name="best_seller">BEST SELLER</string>
+    <string name="product_name_nike_air_max">Nike Air Max</string>
+    <string name="price_rub_752">₽752.00</string>
+    <string name="summer_sale">Summer Sale</string>
+    <string name="off_15">15% OFF</string>
 </resources>

@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.store.ui.forgot.ForgotPasswordScreen
+import com.example.store.ui.home.HomeRootScreen
 import com.example.store.ui.newpassword.CreateNewPasswordScreen
 import com.example.store.ui.onboard.OnboardScreen
 import com.example.store.ui.register.RegisterScreen
@@ -24,7 +25,6 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
         startDestination = Screen.Onboard.route,
         modifier = modifier
     ) {
-
         composable(Screen.Onboard.route) {
             OnboardScreen(
                 onFinished = {
@@ -40,7 +40,11 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
                 onBack = { navController.popBackStack() },
                 onNavigateToForgot = { navController.navigate(Screen.ForgotPassword.route) },
                 onNavigateToRegister = { navController.navigate(Screen.Register.route) },
-                onSignedIn = { /* будет определено позже */ }
+                onSignedIn = {
+                    navController.navigate(Screen.HomeRoot.route) {
+                        popUpTo(Screen.SignIn.route) { inclusive = true }
+                    }
+                }
             )
         }
 
@@ -85,6 +89,10 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
                     }
                 }
             )
+        }
+
+        composable(Screen.HomeRoot.route) {
+            HomeRootScreen()
         }
     }
 }
