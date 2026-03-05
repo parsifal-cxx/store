@@ -77,4 +77,42 @@
     <string name="error_user_already_registered">Пользователь уже зарегистрирован</string>
     <string name="error_invalid_credentials">Неверный email или пароль</string>
     <string name="error_too_many_requests">Слишком много запросов. Попробуйте позже</string>
+
+    <!-- Onboard -->
+    <string name="onboard_1_title">ДОБРО\nПОЖАЛОВАТЬ</string>
+    <string name="onboard_btn_start">Начать</string>
+    <string name="onboard_btn_next">Далее</string>
+    <string name="onboard_btn_done">Готово</string>
+
+    <string name="onboard_2_title">Начнем\nпутешествие</string>
+    <string name="onboard_2_subtitle">Умная, великолепная и модная\nколлекция. Изучите сейчас</string>
+
+    <string name="onboard_3_title">У Вас Есть Сила,\nЧтобы</string>
+    <string name="onboard_3_subtitle">в вашей комнате много красивых и\nпривлекательных растений</string>
+
+    <string name="home_title">Главная</string>
+    <string name="search_hint">Поиск</string>
+    <string name="categories_title">Категории</string>
+    <string name="popular_title">Популярное</string>
+    <string name="promo_title">Акции</string>
+    <string name="all">Все</string>
+    <string name="best_seller">BEST SELLER</string>
+    <string name="product_name_nike_air_max">Nike Air Max</string>
+    <string name="price_rub_752">₽752.00</string>
+    <string name="summer_sale">Summer Sale</string>
+    <string name="off_15">15% OFF</string>
+    <string name="all_products_title">Все товары</string>
+
+    <string name="profile_title">Профиль</string>
+    <string name="profile_edit">Редактировать</string>
+    <string name="profile_save">Сохранить</string>
+    <string name="profile_cancel">Отмена</string>
+    <string name="profile_change_photo">Изменить фото профиля</string>
+
+    <string name="first_name">Имя</string>
+    <string name="last_name">Фамилия</string>
+    <string name="phone">Телефон</string>
+    <string name="address">Адрес</string>
+
+    <string name="error_not_authorized">Пользователь не авторизован</string>
 </resources>

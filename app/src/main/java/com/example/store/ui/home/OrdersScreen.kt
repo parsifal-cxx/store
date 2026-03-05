@@ -1,0 +1,8 @@
+package com.example.store.ui.home
+
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+
+/** Экран Заказы/Доставка. Дата: 04.03.2026, Автор: Бубнов Никита */
+@Composable
+fun OrdersScreen() { Text("Orders") }
