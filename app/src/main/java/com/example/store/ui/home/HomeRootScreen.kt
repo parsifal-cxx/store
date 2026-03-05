@@ -8,12 +8,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.store.ui.home.components.StoreBottomBar
+import com.example.store.ui.profile.ProfileScreen
 
-/** Корневой экран Home с нижним меню. Дата: 04.03.2026, Автор: Бубнов Никита */
+/** Корневой экран Home с нижним меню. Дата: 05.03.2026, Автор: Бубнов Никита */
 @Composable
 fun HomeRootScreen() {
     val navController = rememberNavController()
-
     var selectedTab by remember { mutableStateOf<HomeTab>(HomeTab.Home) }
 
     Scaffold(
@@ -28,9 +28,7 @@ fun HomeRootScreen() {
                         restoreState = true
                     }
                 },
-                onBagClick = {
-                    // экран сумки будет добавлен позже
-                }
+                onBagClick = { /* экран корзины будет позже */ }
             )
         }
     ) { inner ->
@@ -42,12 +40,12 @@ fun HomeRootScreen() {
             composable(HomeTab.Home.route) { HomeScreen() }
             composable(HomeTab.Favorites.route) { FavoritesScreen() }
             composable(HomeTab.Orders.route) { OrdersScreen() }
-            composable(HomeTab.Profile.route) { ProfileStubScreen() }
+            composable(HomeTab.Profile.route) { ProfileScreen() }
         }
     }
 }
 
-/** Вкладки нижнего меню. Дата: 04.03.2026, Автор: Бубнов Никита */
+/** Вкладки нижнего меню. Дата: 05.03.2026, Автор: Бубнов Никита */
 sealed class HomeTab(val route: String) {
     data object Home : HomeTab("tab_home")
     data object Favorites : HomeTab("tab_favorites")

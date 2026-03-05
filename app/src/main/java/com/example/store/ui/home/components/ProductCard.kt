@@ -28,7 +28,7 @@ fun ProductCard(
     val hint = colorResource(R.color.brand_hint)
 
     Surface(
-        modifier = modifier.size(width = 160.dp, height = 210.dp),
+        modifier = modifier,
         shape = RoundedCornerShape(16.dp),
         color = block
     ) {

@@ -34,7 +34,8 @@ class HomeViewModel : ViewModel() {
         val errorRes: Int? = null,
         val categories: List<UiCategory> = emptyList(),
         val selectedCategoryId: String? = null,
-        val products: List<UiProduct> = emptyList()
+        val bestSellers: List<UiProduct> = emptyList(),
+        val allProducts: List<UiProduct> = emptyList()
     )
 
     private val productsRepo = ProductsRepository()
@@ -49,10 +50,6 @@ class HomeViewModel : ViewModel() {
 
     fun dismissError() {
         _state.value = _state.value.copy(errorRes = null)
-    }
-
-    fun retry() {
-        load()
     }
 
     fun selectCategory(categoryId: String?) {
@@ -94,29 +91,36 @@ class HomeViewModel : ViewModel() {
         viewModelScope.launch {
             val categoryId = _state.value.selectedCategoryId
 
-            val productsResult = productsRepo.getBestSellers(categoryId)
-            if (productsResult.isFailure) {
-                Log.e("HomeViewModel", "getBestSellers failed", productsResult.exceptionOrNull())
+            val bestResult = productsRepo.getBestSellers(categoryId)
+            if (bestResult.isFailure) {
+                Log.e("HomeViewModel", "getBestSellers failed", bestResult.exceptionOrNull())
+            }
+
+            val allResult = productsRepo.getProducts(categoryId)
+            if (allResult.isFailure) {
+                Log.e("HomeViewModel", "getProducts failed", allResult.exceptionOrNull())
                 _state.value = _state.value.copy(loading = false, errorRes = R.string.error_unknown)
                 return@launch
             }
 
-            val products = productsResult.getOrNull().orEmpty()
+            val best = bestResult.getOrNull().orEmpty()
+            val all = allResult.getOrNull().orEmpty()
 
-            val previewsResult = imagesRepo.getPreviewUrlsForProducts(products.map { it.id })
+            val ids = (best.asSequence().map { it.id } + all.asSequence().map { it.id })
+                .distinct()
+                .toList()
+
+            val previewsResult = imagesRepo.getPreviewUrlsForProducts(ids)
             if (previewsResult.isFailure) {
                 Log.e("HomeViewModel", "storage list failed", previewsResult.exceptionOrNull())
             }
             val previewMap = previewsResult.getOrNull().orEmpty()
 
-            val uiProducts = products.map { p ->
-                p.toUi(imageUrl = previewMap[p.id])
-            }
-
             _state.value = _state.value.copy(
                 loading = false,
                 errorRes = null,
-                products = uiProducts
+                bestSellers = best.map { it.toUi(previewMap[it.id]) },
+                allProducts = all.map { it.toUi(previewMap[it.id]) }
             )
         }
     }

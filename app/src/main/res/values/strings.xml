@@ -101,4 +101,18 @@
     <string name="price_rub_752">₽752.00</string>
     <string name="summer_sale">Summer Sale</string>
     <string name="off_15">15% OFF</string>
+    <string name="all_products_title">Все товары</string>
+
+    <string name="profile_title">Профиль</string>
+    <string name="profile_edit">Редактировать</string>
+    <string name="profile_save">Сохранить</string>
+    <string name="profile_cancel">Отмена</string>
+    <string name="profile_change_photo">Изменить фото профиля</string>
+
+    <string name="first_name">Имя</string>
+    <string name="last_name">Фамилия</string>
+    <string name="phone">Телефон</string>
+    <string name="address">Адрес</string>
+
+    <string name="error_not_authorized">Пользователь не авторизован</string>
 </resources>

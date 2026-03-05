@@ -3,8 +3,11 @@ package com.example.store.ui.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items as lazyItems
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -31,8 +34,8 @@ fun HomeScreen(
 
     HomeContent(
         state = state,
-        onCategoryClick = { vm.selectCategory(it) },
-        onDismissError = { vm.dismissError() }
+        onCategoryClick = vm::selectCategory,
+        onDismissError = vm::dismissError
     )
 }
 
@@ -50,114 +53,149 @@ fun HomeContent(
     val accent = colorResource(R.color.brand_accent)
 
     Box(Modifier.fillMaxSize().background(bg)) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 24.dp),
-            contentPadding = PaddingValues(top = 64.dp, bottom = 110.dp)
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(start = 24.dp, end = 24.dp, top = 64.dp, bottom = 110.dp),
+            horizontalArrangement = Arrangement.spacedBy(14.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            item {
-                Text(
-                    text = stringResource(R.string.home_title),
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = text,
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
+            item(span = { GridItemSpan(2) }) {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        text = stringResource(R.string.home_title),
+                        style = MaterialTheme.typography.headlineLarge,
+                        color = text,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
 
-                Spacer(Modifier.height(22.dp))
+                    Spacer(Modifier.height(22.dp))
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    SearchField(modifier = Modifier.weight(1f))
-
-                    Spacer(Modifier.width(14.dp))
-
-                    Surface(
-                        modifier = Modifier
-                            .size(46.dp)
-                            .shadow(6.dp, CircleShape),
-                        shape = CircleShape,
-                        color = accent
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Box(contentAlignment = Alignment.Center) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_filter),
-                                contentDescription = null,
-                                tint = block,
-                                modifier = Modifier.size(20.dp)
-                            )
-                        }
-                    }
-                }
+                        SearchField(modifier = Modifier.weight(1f))
 
-                Spacer(Modifier.height(18.dp))
-
-                Text(
-                    text = stringResource(R.string.categories_title),
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = text
-                )
-
-                Spacer(Modifier.height(12.dp))
-            }
-
-            item {
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    items(state.categories) { c ->
-                        val selected = c.id == state.selectedCategoryId
-                        val chipBg = if (selected) accent else block
-                        val chipText = if (selected) block else subText
+                        Spacer(Modifier.width(14.dp))
 
                         Surface(
-                            shape = RoundedCornerShape(12.dp),
-                            color = chipBg,
-                            modifier = Modifier.height(40.dp),
-                            onClick = { onCategoryClick(c.id) }
+                            modifier = Modifier
+                                .size(46.dp)
+                                .shadow(6.dp, CircleShape),
+                            shape = CircleShape,
+                            color = accent
                         ) {
-                            Box(
-                                modifier = Modifier.padding(horizontal = 18.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    text = c.title,
-                                    style = MaterialTheme.typography.labelMedium,
-                                    color = chipText
+                            Box(contentAlignment = Alignment.Center) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_filter),
+                                    contentDescription = null,
+                                    tint = block,
+                                    modifier = Modifier.size(20.dp)
                                 )
                             }
                         }
                     }
-                }
 
-                Spacer(Modifier.height(18.dp))
-            }
+                    Spacer(Modifier.height(18.dp))
 
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.Bottom
-                ) {
                     Text(
-                        text = stringResource(R.string.popular_title),
+                        text = stringResource(R.string.categories_title),
                         style = MaterialTheme.typography.headlineSmall,
-                        color = text,
-                        modifier = Modifier.weight(1f)
+                        color = text
                     )
-                    Text(
-                        text = stringResource(R.string.all),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = accent
-                    )
-                }
 
-                Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(12.dp))
+
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        lazyItems(state.categories, key = { it.id ?: "all" }) { c ->
+                            val selected = c.id == state.selectedCategoryId
+                            val chipBg = if (selected) accent else block
+                            val chipText = if (selected) block else subText
+
+                            Surface(
+                                shape = RoundedCornerShape(12.dp),
+                                color = chipBg,
+                                modifier = Modifier.height(40.dp),
+                                onClick = { onCategoryClick(c.id) }
+                            ) {
+                                Box(
+                                    modifier = Modifier.padding(horizontal = 18.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = c.title,
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = chipText
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    Spacer(Modifier.height(10.dp))
+                }
             }
 
-            item {
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-                    items(state.products) { p ->
-                        ProductCard(product = p)
+            item(span = { GridItemSpan(2) }) {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        Text(
+                            text = stringResource(R.string.popular_title),
+                            style = MaterialTheme.typography.headlineSmall,
+                            color = text,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Text(
+                            text = stringResource(R.string.all),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = accent
+                        )
                     }
+
+                    Spacer(Modifier.height(12.dp))
+
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(14.dp)
+                    ) {
+                        lazyItems(state.bestSellers, key = { it.id }) { p ->
+                            ProductCard(
+                                product = p,
+                                modifier = Modifier
+                                    .width(160.dp)
+                                    .height(210.dp)
+                            )
+                        }
+                    }
+
+                    Spacer(Modifier.height(6.dp))
                 }
+            }
+
+            item(span = { GridItemSpan(2) }) {
+                Text(
+                    text = stringResource(R.string.all_products_title),
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = text,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+            items(state.allProducts, key = { it.id }) { p ->
+                ProductCard(
+                    product = p,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(160f / 210f)
+                )
             }
         }
 

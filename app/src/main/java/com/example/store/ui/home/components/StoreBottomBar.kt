@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.example.store.R
 import com.example.store.ui.home.HomeTab
 
-/** Нижнее меню Home. Дата: 04.03.2026, Автор: Бубнов Никита */
+/** Нижнее меню Home. Дата: 05.03.2026, Автор: Бубнов Никита */
 @Composable
 fun StoreBottomBar(
     selected: HomeTab,
@@ -26,66 +26,95 @@ fun StoreBottomBar(
     val active = colorResource(R.color.brand_accent)
     val inactive = colorResource(R.color.brand_sub_text_dark)
 
-    BottomAppBar(
-        containerColor = block,
-        tonalElevation = 6.dp,
-        contentPadding = PaddingValues(horizontal = 22.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = { onSelect(HomeTab.Home) }) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_nav_home),
-                    contentDescription = null,
-                    tint = if (selected == HomeTab.Home) active else inactive
-                )
-            }
-
-            IconButton(onClick = { onSelect(HomeTab.Favorites) }) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_nav_favorite),
-                    contentDescription = null,
-                    tint = if (selected == HomeTab.Favorites) active else inactive
-                )
-            }
-
-            Spacer(Modifier.weight(1f))
-
-            IconButton(onClick = { onSelect(HomeTab.Orders) }) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_nav_truck),
-                    contentDescription = null,
-                    tint = if (selected == HomeTab.Orders) active else inactive
-                )
-            }
-
-            IconButton(onClick = { onSelect(HomeTab.Profile) }) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_nav_profile),
-                    contentDescription = null,
-                    tint = if (selected == HomeTab.Profile) active else inactive
-                )
-            }
-        }
-    }
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 16.dp),
-        contentAlignment = Alignment.BottomCenter
+            .height(92.dp)
     ) {
+        BottomAppBar(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth(),
+            containerColor = block,
+            tonalElevation = 6.dp,
+            contentPadding = PaddingValues(horizontal = 16.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                BottomBarItem(
+                    selected = selected == HomeTab.Home,
+                    active = active,
+                    inactive = inactive,
+                    iconRes = R.drawable.ic_nav_home,
+                    onClick = { onSelect(HomeTab.Home) }
+                )
+
+                BottomBarItem(
+                    selected = selected == HomeTab.Favorites,
+                    active = active,
+                    inactive = inactive,
+                    iconRes = R.drawable.ic_nav_favorite,
+                    onClick = { onSelect(HomeTab.Favorites) }
+                )
+
+                Spacer(Modifier.width(72.dp))
+
+                BottomBarItem(
+                    selected = selected == HomeTab.Orders,
+                    active = active,
+                    inactive = inactive,
+                    iconRes = R.drawable.ic_nav_truck,
+                    onClick = { onSelect(HomeTab.Orders) }
+                )
+
+                BottomBarItem(
+                    selected = selected == HomeTab.Profile,
+                    active = active,
+                    inactive = inactive,
+                    iconRes = R.drawable.ic_nav_profile,
+                    onClick = { onSelect(HomeTab.Profile) }
+                )
+            }
+        }
+
         FloatingActionButton(
             onClick = onBagClick,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .size(60.dp)
+                .offset(y = 0.dp),
             shape = CircleShape,
             containerColor = active,
             contentColor = block
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_nav_bag),
-                contentDescription = null
+                contentDescription = null,
+                modifier = Modifier.size(24.dp)
+            )
+        }
+    }
+}
+
+@Composable
+private fun RowScope.BottomBarItem(
+    selected: Boolean,
+    active: androidx.compose.ui.graphics.Color,
+    inactive: androidx.compose.ui.graphics.Color,
+    iconRes: Int,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier.weight(1f),
+        contentAlignment = Alignment.Center
+    ) {
+        IconButton(onClick = onClick) {
+            Icon(
+                painter = painterResource(iconRes),
+                contentDescription = null,
+                tint = if (selected) active else inactive
             )
         }
     }
