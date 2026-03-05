@@ -1,25 +1,24 @@
 package com.example.store.ui.home.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.store.R
-import com.example.store.ui.home.HomeProduct
+import com.example.store.ui.home.HomeViewModel
 
-/** Карточка товара Home. Дата: 04.03.2026, Автор: Бубнов Никита */
+/** Карточка товара Home. Дата: 05.03.2026, Автор: Бубнов Никита */
 @Composable
 fun ProductCard(
-    product: HomeProduct,
+    product: HomeViewModel.UiProduct,
     modifier: Modifier = Modifier
 ) {
     val block = colorResource(R.color.brand_block)
@@ -52,8 +51,8 @@ fun ProductCard(
                 }
             }
 
-            Image(
-                painter = painterResource(product.imageRes),
+            AsyncImage(
+                model = product.imageUrl,
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -67,20 +66,23 @@ fun ProductCard(
                     .align(Alignment.BottomStart)
                     .padding(start = 12.dp, end = 52.dp, bottom = 12.dp)
             ) {
+                if (product.isBestSeller) {
+                    Text(
+                        text = "BEST SELLER",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = accent
+                    )
+                    Spacer(Modifier.height(6.dp))
+                }
+
                 Text(
-                    text = stringResource(R.string.best_seller),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = accent
-                )
-                Spacer(Modifier.height(6.dp))
-                Text(
-                    text = stringResource(product.titleRes),
+                    text = product.title,
                     style = MaterialTheme.typography.bodyMedium,
                     color = text
                 )
                 Spacer(Modifier.height(6.dp))
                 Text(
-                    text = stringResource(product.priceRes),
+                    text = product.price,
                     style = MaterialTheme.typography.labelMedium,
                     color = subText
                 )

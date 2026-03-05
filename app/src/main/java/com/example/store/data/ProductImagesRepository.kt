@@ -3,33 +3,33 @@ package com.example.store.data
 import com.example.store.utils.StorageUrl
 import io.github.jan.supabase.storage.storage
 
-/** Работа с фото товаров в Storage. Дата: 04.03.2026, Автор: Бубнов Никита */
+/** Репозиторий фото товаров в Storage. Дата: 05.03.2026, Автор: Бубнов Никита */
 class ProductImagesRepository {
 
     private val storage = SupabaseClient.client.storage
 
-    suspend fun getVariantFileNames(productId: String): List<String> {
-        val prefix = "$productId-"
+    suspend fun getPreviewUrlsForProducts(productIds: List<String>): Result<Map<String, String>> = runCatching {
+        val idSet = productIds.toSet()
+        val objects = storage.from("products").list()
 
-        val objects = storage
-            .from("products")
-            .list()
+        val previews = LinkedHashMap<String, String>()
 
-        return objects
-            .map { it.name }
-            .filter { it.startsWith(prefix) }
-            .sorted()
+        for (obj in objects) {
+            val name = obj.name
+            val productId = extractProductId(name) ?: continue
+            if (productId !in idSet) continue
+            if (previews.containsKey(productId)) continue
+
+            previews[productId] = StorageUrl.publicObject(bucket = "products", fileName = name)
+        }
+
+        previews
     }
 
-    suspend fun getVariantUrls(productId: String): List<String> {
-        return getVariantFileNames(productId).map { file ->
-            StorageUrl.publicObject(bucket = "products", fileName = file)
-        }
-    }
-
-    suspend fun getPreviewUrl(productId: String): String? {
-        return getVariantFileNames(productId).firstOrNull()?.let { file ->
-            StorageUrl.publicObject(bucket = "products", fileName = file)
-        }
+    private fun extractProductId(fileName: String): String? {
+        val base = fileName.substringBeforeLast('.', missingDelimiterValue = "")
+        if (base.isBlank()) return null
+        val productId = base.substringBeforeLast('-', missingDelimiterValue = "")
+        return productId.ifBlank { null }
     }
 }
