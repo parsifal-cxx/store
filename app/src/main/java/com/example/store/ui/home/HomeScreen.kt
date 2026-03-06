@@ -28,6 +28,7 @@ import com.example.store.ui.home.components.SearchField
 /** Экран Home. Дата: 05.03.2026, Автор: Бубнов Никита */
 @Composable
 fun HomeScreen(
+    onOpenDetails: (String) -> Unit,
     vm: HomeViewModel = viewModel()
 ) {
     val state by vm.state.collectAsState()
@@ -35,6 +36,8 @@ fun HomeScreen(
     HomeContent(
         state = state,
         onCategoryClick = vm::selectCategory,
+        onToggleFavorite = vm::toggleFavorite,
+        onOpenDetails = onOpenDetails,
         onDismissError = vm::dismissError
     )
 }
@@ -44,6 +47,8 @@ fun HomeScreen(
 fun HomeContent(
     state: HomeViewModel.UiState,
     onCategoryClick: (String?) -> Unit,
+    onToggleFavorite: (String) -> Unit,
+    onOpenDetails: (String) -> Unit,
     onDismissError: () -> Unit
 ) {
     val bg = colorResource(R.color.brand_background)
@@ -171,7 +176,9 @@ fun HomeContent(
                                 product = p,
                                 modifier = Modifier
                                     .width(160.dp)
-                                    .height(210.dp)
+                                    .height(210.dp),
+                                onClick = { onOpenDetails(p.id) },
+                                onFavoriteClick = { onToggleFavorite(p.id) }
                             )
                         }
                     }
@@ -194,7 +201,9 @@ fun HomeContent(
                     product = p,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .aspectRatio(160f / 210f)
+                        .aspectRatio(160f / 210f),
+                    onClick = { onOpenDetails(p.id) },
+                    onFavoriteClick = { onToggleFavorite(p.id) }
                 )
             }
         }

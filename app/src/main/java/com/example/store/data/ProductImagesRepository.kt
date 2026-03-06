@@ -26,6 +26,16 @@ class ProductImagesRepository {
         previews
     }
 
+    suspend fun getVariantUrls(productId: String): Result<List<String>> = runCatching {
+        val prefix = "$productId-"
+        val objects = storage.from("products").list()
+        objects
+            .map { it.name }
+            .filter { it.startsWith(prefix) }
+            .sorted()
+            .map { com.example.store.utils.StorageUrl.publicObject("products", it) }
+    }
+
     private fun extractProductId(fileName: String): String? {
         val base = fileName.substringBeforeLast('.', missingDelimiterValue = "")
         if (base.isBlank()) return null

@@ -4,7 +4,7 @@ import com.example.store.data.model.CategoryDto
 import com.example.store.data.model.ProductDto
 import io.github.jan.supabase.postgrest.postgrest
 
-/** Репозиторий товаров/категорий. Дата: 04.03.2026, Автор: Бубнов Никита */
+/** Репозиторий товаров/категорий. Дата: 05.03.2026, Автор: Бубнов Никита */
 class ProductsRepository {
 
     private val postgrest = SupabaseClient.client.postgrest
@@ -34,5 +34,26 @@ class ProductsRepository {
                 }
             }
             .decodeList<ProductDto>()
+    }
+
+    suspend fun getProductById(id: String): Result<ProductDto?> = runCatching {
+        val list = postgrest["products"]
+            .select {
+                filter { eq("id", id) }
+            }
+            .decodeList<ProductDto>()
+
+        list.firstOrNull()
+    }
+
+    suspend fun getProductsByIds(ids: List<String>): Result<List<ProductDto>> = runCatching {
+        if (ids.isEmpty()) return@runCatching emptyList<ProductDto>()
+
+        val all = postgrest["products"]
+            .select()
+            .decodeList<ProductDto>()
+
+        val idSet = ids.toHashSet()
+        all.filter { it.id in idSet }
     }
 }

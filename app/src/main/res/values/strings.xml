@@ -100,9 +100,8 @@
     <string name="product_name_nike_air_max">Nike Air Max</string>
     <string name="price_rub_752">₽752.00</string>
     <string name="summer_sale">Summer Sale</string>
-    <string name="off_15">15% OFF</string>
+    <string name="off_15" formatted="false">15% OFF</string>
     <string name="all_products_title">Все товары</string>
-
     <string name="profile_title">Профиль</string>
     <string name="profile_edit">Редактировать</string>
     <string name="profile_save">Сохранить</string>
@@ -115,4 +114,11 @@
     <string name="address">Адрес</string>
 
     <string name="error_not_authorized">Пользователь не авторизован</string>
+
+    <string name="favorite_title">Избранное</string>
+    <string name="details_shop_title">Sneaker Shop</string>
+    <string name="details_add_to_cart">В корзину</string>
+    <string name="details_more">Подробнее</string>
+    <string name="details_hide">Скрыть</string>
+    <string name="details_category_mens_shoes">Mens Shoes</string>
 </resources>

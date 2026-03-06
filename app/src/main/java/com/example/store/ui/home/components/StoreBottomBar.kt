@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.example.store.R
 import com.example.store.ui.home.HomeTab
 
-/** Нижнее меню Home. Дата: 05.03.2026, Автор: Бубнов Никита */
+/** Нижнее меню. Дата: 05.03.2026, Автор: Бубнов Никита */
 @Composable
 fun StoreBottomBar(
     selected: HomeTab,
@@ -52,11 +52,11 @@ fun StoreBottomBar(
                 )
 
                 BottomBarItem(
-                    selected = selected == HomeTab.Favorites,
+                    selected = selected == HomeTab.Favorite,
                     active = active,
                     inactive = inactive,
                     iconRes = R.drawable.ic_nav_favorite,
-                    onClick = { onSelect(HomeTab.Favorites) }
+                    onClick = { onSelect(HomeTab.Favorite) }
                 )
 
                 Spacer(Modifier.width(72.dp))
@@ -84,7 +84,7 @@ fun StoreBottomBar(
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .size(60.dp)
-                .offset(y = 0.dp),
+                .offset(y = 16.dp),
             shape = CircleShape,
             containerColor = active,
             contentColor = block

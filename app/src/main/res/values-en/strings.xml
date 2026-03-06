@@ -100,9 +100,8 @@
     <string name="product_name_nike_air_max">Nike Air Max</string>
     <string name="price_rub_752">₽752.00</string>
     <string name="summer_sale">Summer Sale</string>
-    <string name="off_15">15% OFF</string>
+    <string name="off_15" formatted="false">15% OFF</string>
     <string name="all_products_title">All products</string>
-
     <string name="profile_title">Profile</string>
     <string name="profile_edit">Edit</string>
     <string name="profile_save">Save</string>
@@ -115,4 +114,11 @@
     <string name="address">Address</string>
 
     <string name="error_not_authorized">User is not authorized</string>
+
+    <string name="favorite_title">Favorite</string>
+    <string name="details_shop_title">Sneaker Shop</string>
+    <string name="details_add_to_cart">Add to cart</string>
+    <string name="details_more">More</string>
+    <string name="details_hide">Hide</string>
+    <string name="details_category_mens_shoes">Mens Shoes</string>
 </resources>
