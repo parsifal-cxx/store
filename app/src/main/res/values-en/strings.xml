@@ -121,4 +121,22 @@
     <string name="details_more">More</string>
     <string name="details_hide">Hide</string>
     <string name="details_category_mens_shoes">Mens Shoes</string>
+
+    <string name="cart_title">Cart</string>
+    <string name="cart_sum">Sum</string>
+    <string name="cart_delivery">Delivery</string>
+    <string name="cart_total">Total</string>
+    <string name="cart_checkout">Checkout</string>
+    <string name="cart_items_count">%1$d items</string>
+
+    <string name="checkout_title">Checkout</string>
+    <string name="checkout_confirm">Confirm</string>
+    <string name="checkout_contact">Contact info</string>
+    <string name="checkout_address">Address</string>
+    <string name="checkout_map">View on map</string>
+    <string name="checkout_payment">Payment</string>
+
+    <string name="checkout_dialog_title">Order created</string>
+    <string name="checkout_dialog_text">The order has been created.</string>
+    <string name="checkout_back_to_shop">Back to shopping</string>
 </resources>

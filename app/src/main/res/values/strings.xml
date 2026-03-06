@@ -121,4 +121,22 @@
     <string name="details_more">Подробнее</string>
     <string name="details_hide">Скрыть</string>
     <string name="details_category_mens_shoes">Mens Shoes</string>
+
+    <string name="cart_title">Корзина</string>
+    <string name="cart_sum">Сумма</string>
+    <string name="cart_delivery">Доставка</string>
+    <string name="cart_total">Итого</string>
+    <string name="cart_checkout">Оформить заказ</string>
+    <string name="cart_items_count">%1$d товара</string>
+
+    <string name="checkout_title">Оформление</string>
+    <string name="checkout_confirm">Подтвердить</string>
+    <string name="checkout_contact">Контактная информация</string>
+    <string name="checkout_address">Адрес</string>
+    <string name="checkout_map">Посмотреть на карте</string>
+    <string name="checkout_payment">Способ оплаты</string>
+
+    <string name="checkout_dialog_title">Заказ оформлен</string>
+    <string name="checkout_dialog_text">Заказ успешно создан.</string>
+    <string name="checkout_back_to_shop">Вернуться к покупкам</string>
 </resources>
