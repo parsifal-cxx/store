@@ -25,7 +25,7 @@ import com.example.store.R
 import com.example.store.ui.home.components.ProductCard
 import com.example.store.ui.home.components.SearchField
 
-/** Экран Home. Дата: 05.03.2026, Автор: Бубнов Никита */
+/** Экран Home. Дата: 06.03.2026, Автор: Бубнов Никита */
 @Composable
 fun HomeScreen(
     onOpenDetails: (String) -> Unit,
@@ -37,17 +37,19 @@ fun HomeScreen(
         state = state,
         onCategoryClick = vm::selectCategory,
         onToggleFavorite = vm::toggleFavorite,
+        onToggleCart = vm::toggleCart,
         onOpenDetails = onOpenDetails,
         onDismissError = vm::dismissError
     )
 }
 
-/** UI Home. Дата: 05.03.2026, Автор: Бубнов Никита */
+/** UI Home. Дата: 06.03.2026, Автор: Бубнов Никита */
 @Composable
 fun HomeContent(
     state: HomeViewModel.UiState,
     onCategoryClick: (String?) -> Unit,
     onToggleFavorite: (String) -> Unit,
+    onToggleCart: (String) -> Unit,
     onOpenDetails: (String) -> Unit,
     onDismissError: () -> Unit
 ) {
@@ -178,7 +180,8 @@ fun HomeContent(
                                     .width(160.dp)
                                     .height(210.dp),
                                 onClick = { onOpenDetails(p.id) },
-                                onFavoriteClick = { onToggleFavorite(p.id) }
+                                onFavoriteClick = { onToggleFavorite(p.id) },
+                                onCartClick = { onToggleCart(p.id) }
                             )
                         }
                     }
@@ -203,7 +206,8 @@ fun HomeContent(
                         .fillMaxWidth()
                         .aspectRatio(160f / 210f),
                     onClick = { onOpenDetails(p.id) },
-                    onFavoriteClick = { onToggleFavorite(p.id) }
+                    onFavoriteClick = { onToggleFavorite(p.id) },
+                    onCartClick = { onToggleCart(p.id) }
                 )
             }
         }

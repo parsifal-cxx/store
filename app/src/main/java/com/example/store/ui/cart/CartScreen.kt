@@ -7,9 +7,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.material3.SwipeToDismissBox
-import androidx.compose.material3.SwipeToDismissBoxValue
-import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.store.R
-import kotlinx.coroutines.launch
+import com.example.store.ui.components.SwipeRevealItem
 
 /** Экран корзины. Дата: 06.03.2026, Автор: Бубнов Никита */
 @Composable
@@ -94,22 +91,11 @@ fun CartScreen(
                     onClick = onBack
                 ) {
                     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_back),
-                            contentDescription = null,
-                            tint = text
-                        )
+                        Icon(painterResource(R.drawable.ic_back), null, tint = text)
                     }
                 }
-
                 Spacer(Modifier.weight(1f))
-
-                Text(
-                    text = stringResource(R.string.cart_title),
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = text
-                )
-
+                Text(stringResource(R.string.cart_title), style = MaterialTheme.typography.headlineSmall, color = text)
                 Spacer(Modifier.weight(1f))
                 Spacer(Modifier.size(40.dp))
             }
@@ -161,76 +147,48 @@ private fun CartSwipeItem(
     val block = colorResource(R.color.brand_block)
     val text = colorResource(R.color.brand_text)
 
-    val scope = rememberCoroutineScope()
-    val dismissState = rememberSwipeToDismissBoxState(
-        confirmValueChange = { true }
-    )
-
-    SwipeToDismissBox(
-        state = dismissState,
-        backgroundContent = {
-            when (dismissState.currentValue) {
-                SwipeToDismissBoxValue.StartToEnd -> {
-                    // не используется
-                }
-                SwipeToDismissBoxValue.EndToStart -> {
-                    // не используется
-                }
-                else -> Unit
-            }
-
-            val direction = dismissState.targetValue
-            if (direction == SwipeToDismissBoxValue.StartToEnd) {
-                // + / count / -
-                Row(
-                    Modifier.fillMaxSize(),
-                    verticalAlignment = Alignment.CenterVertically
+    SwipeRevealItem(
+        modifier = Modifier.height(104.dp),
+        backgroundRight = {
+            Row(
+                Modifier.fillMaxSize(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Surface(
+                    modifier = Modifier.width(60.dp).fillMaxHeight(),
+                    shape = RoundedCornerShape(14.dp),
+                    color = blue
                 ) {
-                    Surface(
-                        modifier = Modifier.width(54.dp).fillMaxHeight(),
-                        shape = RoundedCornerShape(14.dp),
-                        color = blue
+                    Column(
+                        Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        Column(
-                            Modifier.fillMaxSize(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                            IconButton(onClick = {
-                                onInc()
-                                scope.launch { dismissState.reset() }
-                            }) {
-                                Icon(painterResource(R.drawable.ic_plus), null, tint = block)
-                            }
-                            Text(item.count.toString(), color = block, style = MaterialTheme.typography.bodyMedium)
-                            IconButton(onClick = {
-                                onDec()
-                                scope.launch { dismissState.reset() }
-                            }) {
-                                Icon(painterResource(R.drawable.ic_minus), null, tint = block)
-                            }
+                        IconButton(onClick = onInc) {
+                            Icon(painterResource(R.drawable.ic_plus), null, tint = block)
+                        }
+                        Text(item.count.toString(), color = block, style = MaterialTheme.typography.bodyMedium)
+                        IconButton(onClick = onDec) {
+                            Icon(painterResource(R.drawable.ic_minus), null, tint = block)
                         }
                     }
                 }
-            } else if (direction == SwipeToDismissBoxValue.EndToStart) {
-                // delete
-                Row(
-                    Modifier.fillMaxSize(),
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically
+            }
+        },
+        backgroundLeft = {
+            Row(
+                Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Surface(
+                    modifier = Modifier.width(60.dp).fillMaxHeight(),
+                    shape = RoundedCornerShape(14.dp),
+                    color = red,
+                    onClick = onDelete
                 ) {
-                    Surface(
-                        modifier = Modifier.width(70.dp).fillMaxHeight(),
-                        shape = RoundedCornerShape(14.dp),
-                        color = red,
-                        onClick = {
-                            onDelete()
-                            scope.launch { dismissState.reset() }
-                        }
-                    ) {
-                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            Icon(painterResource(R.drawable.ic_trash), null, tint = block)
-                        }
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Icon(painterResource(R.drawable.ic_trash), null, tint = block)
                     }
                 }
             }
@@ -239,21 +197,22 @@ private fun CartSwipeItem(
             Surface(
                 shape = RoundedCornerShape(16.dp),
                 color = block,
-                tonalElevation = 2.dp
+                tonalElevation = 2.dp,
+                modifier = Modifier.fillMaxSize()
             ) {
                 Row(
-                    Modifier.fillMaxWidth().padding(12.dp),
+                    Modifier.fillMaxSize().padding(12.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Surface(
-                        modifier = Modifier.size(56.dp),
+                        modifier = Modifier.size(80.dp),
                         shape = RoundedCornerShape(14.dp),
                         color = colorResource(R.color.brand_sub_text_light)
                     ) {
                         AsyncImage(model = item.imageUrl, contentDescription = null)
                     }
 
-                    Spacer(Modifier.width(12.dp))
+                    Spacer(Modifier.width(16.dp))
 
                     Column(Modifier.weight(1f)) {
                         Text(item.title, color = text, style = MaterialTheme.typography.bodyMedium)

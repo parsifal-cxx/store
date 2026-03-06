@@ -8,7 +8,6 @@ import com.example.store.data.OrdersRepository
 import com.example.store.data.ProductImagesRepository
 import com.example.store.data.ProductsRepository
 import com.example.store.data.model.OrderDto
-import com.example.store.data.model.OrderItemDto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -39,7 +38,6 @@ class OrdersViewModel : ViewModel() {
     )
 
     private val ordersRepo = OrdersRepository()
-    private val prodRepo = ProductsRepository()
     private val imgRepo = ProductImagesRepository()
     private val cartRepo = CartRepository()
 
@@ -128,10 +126,10 @@ class OrdersViewModel : ViewModel() {
         }
     }
 
-    fun cancelOrder(orderId: Long) {
+    fun deleteOrder(orderId: Long) {
         viewModelScope.launch {
-            ordersRepo.cancel(orderId)
-            load()
+            val res = ordersRepo.deleteOrder(orderId)
+            if (res.isSuccess) load() else _state.value = _state.value.copy(errorRes = mapError(res.exceptionOrNull()))
         }
     }
 

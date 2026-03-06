@@ -84,7 +84,8 @@ fun FavoriteScreen(
                     product = p,
                     modifier = Modifier.fillMaxWidth().aspectRatio(160f / 210f),
                     onClick = { onOpenDetails(p.id) },
-                    onFavoriteClick = { vm.removeFromFavorite(p.id) }
+                    onFavoriteClick = { vm.removeFromFavorite(p.id) },
+                    onCartClick = { /* функционал корзины в избранном пока не требуется */ }
                 )
             }
         }

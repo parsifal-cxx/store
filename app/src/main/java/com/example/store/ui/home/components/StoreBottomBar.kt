@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.example.store.R
 import com.example.store.ui.home.HomeTab
 
-/** Нижнее меню. Дата: 05.03.2026, Автор: Бубнов Никита */
+/** Нижнее меню Home. Дата: 06.03.2026, Автор: Бубнов Никита */
 @Composable
 fun StoreBottomBar(
     selected: HomeTab,
@@ -29,7 +29,7 @@ fun StoreBottomBar(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(92.dp)
+            .height(100.dp) // чуть выше, чтобы влез FAB
     ) {
         BottomAppBar(
             modifier = Modifier
@@ -84,7 +84,7 @@ fun StoreBottomBar(
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .size(60.dp)
-                .offset(y = 16.dp),
+                .offset(y = 10.dp), // подняли выше
             shape = CircleShape,
             containerColor = active,
             contentColor = block

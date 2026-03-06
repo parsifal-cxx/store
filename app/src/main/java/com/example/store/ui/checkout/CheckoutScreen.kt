@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -12,11 +13,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -171,13 +176,18 @@ fun CheckoutScreen(
 
             Spacer(Modifier.height(14.dp))
 
+            // Карта (статичная картинка)
             Surface(
                 modifier = Modifier.fillMaxWidth().height(140.dp),
                 shape = RoundedCornerShape(16.dp),
                 color = block
             ) {
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(stringResource(R.string.checkout_map), color = sub)
+                Box(Modifier.fillMaxSize()) {
+                    // Если есть ресурс img_map_placeholder, раскомментируй и используй
+                    // Image(painter = painterResource(R.drawable.img_map_placeholder), contentDescription = null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
+
+                    // Заглушка, если картинки нет
+                    Text(stringResource(R.string.checkout_map), color = sub, modifier = Modifier.align(Alignment.Center))
                 }
             }
 
@@ -219,13 +229,14 @@ private fun ContactRow(
         Spacer(Modifier.width(10.dp))
 
         if (!editing) {
-            Text(label, color = text, style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
+            Text(label, color = text, style = TextStyle(fontSize = 12.sp), modifier = Modifier.weight(1f))
         } else {
             TextField(
                 value = value,
                 onValueChange = onValueChange,
                 modifier = Modifier.weight(1f).height(48.dp),
                 singleLine = true,
+                textStyle = TextStyle(fontSize = 12.sp), // <--- Уменьшили шрифт
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = block,
                     unfocusedContainerColor = block,

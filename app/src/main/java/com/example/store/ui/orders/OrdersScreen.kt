@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.material3.SwipeToDismissBox
@@ -56,7 +55,7 @@ fun OrdersScreen(
                             row = row,
                             onOpen = { onOpenDetail(row.orderId) },
                             onRepeat = { vm.repeatOrder(row.orderId) },
-                            onCancel = { vm.cancelOrder(row.orderId) }
+                            onDelete = { vm.deleteOrder(row.orderId) }
                         )
                     }
                 }
@@ -76,7 +75,7 @@ private fun OrderSwipeCard(
     row: OrdersViewModel.UiRow.OrderRow,
     onOpen: () -> Unit,
     onRepeat: () -> Unit,
-    onCancel: () -> Unit
+    onDelete: () -> Unit
 ) {
     val blue = colorResource(R.color.brand_accent)
     val red = colorResource(R.color.brand_red)
@@ -92,6 +91,7 @@ private fun OrderSwipeCard(
         backgroundContent = {
             val target = dismissState.targetValue
             if (target == SwipeToDismissBoxValue.StartToEnd) {
+                // Вправо: Повторить
                 Row(Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
                     Surface(
                         modifier = Modifier.size(56.dp),
@@ -108,18 +108,19 @@ private fun OrderSwipeCard(
                     }
                 }
             } else if (target == SwipeToDismissBoxValue.EndToStart) {
+
                 Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically) {
                     Surface(
                         modifier = Modifier.size(56.dp),
                         shape = RoundedCornerShape(14.dp),
                         color = red,
                         onClick = {
-                            onCancel()
+                            onDelete()
                             scope.launch { dismissState.reset() }
                         }
                     ) {
                         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            Icon(painterResource(R.drawable.ic_close), null, tint = block)
+                            Icon(painterResource(R.drawable.ic_trash), null, tint = block)
                         }
                     }
                 }

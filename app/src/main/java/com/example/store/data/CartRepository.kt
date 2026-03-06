@@ -2,7 +2,6 @@ package com.example.store.data
 
 import com.example.store.data.model.CartRowDto
 import io.github.jan.supabase.gotrue.auth
-import io.github.jan.supabase.postgrest.decodeList
 import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -55,6 +54,24 @@ class CartRepository {
 
     suspend fun clear(userId: String): Result<Unit> = runCatching {
         postgrest["cart"].delete { filter { eq("user_id", userId) } }
+        Unit
+    }
+
+    suspend fun getProductIdsInCart(userId: String): Result<List<String>> = runCatching {
+        postgrest["cart"]
+            .select { filter { eq("user_id", userId) } }
+            .decodeList<CartRowDto>()
+            .mapNotNull { it.productId }
+            .distinct()
+    }
+
+    suspend fun removeAll(userId: String, productId: String): Result<Unit> = runCatching {
+        postgrest["cart"].delete {
+            filter {
+                eq("user_id", userId)
+                eq("product_id", productId)
+            }
+        }
         Unit
     }
 }

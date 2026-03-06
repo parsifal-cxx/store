@@ -10,10 +10,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.store.R
 
-/** Поле поиска Home. Дата: 04.03.2026, Автор: Бубнов Никита */
+/** Поле поиска Home. Дата: 06.03.2026, Автор: Бубнов Никита */
 @Composable
 fun SearchField(
     modifier: Modifier = Modifier
@@ -30,18 +32,19 @@ fun SearchField(
         modifier = modifier
             .height(46.dp)
             .shadow(6.dp, RoundedCornerShape(14.dp)),
+        textStyle = TextStyle(fontSize = 12.sp, color = text), // <--- Уменьшили шрифт ввода
         placeholder = {
             Text(
                 text = stringResource(R.string.search_hint),
-                style = MaterialTheme.typography.labelSmall,
-                color = hint
+                style = TextStyle(fontSize = 12.sp, color = hint) // <--- Уменьшили плейсхолдер
             )
         },
         leadingIcon = {
             Icon(
                 painter = painterResource(R.drawable.ic_search),
                 contentDescription = null,
-                tint = hint
+                tint = hint,
+                modifier = Modifier.size(18.dp)
             )
         },
         singleLine = true,

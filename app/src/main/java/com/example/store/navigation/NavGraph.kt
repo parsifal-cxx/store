@@ -3,20 +3,21 @@ package com.example.store.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.*
 import androidx.navigation.navArgument
+import com.example.store.ui.cart.CartScreen
+import com.example.store.ui.checkout.CheckoutScreen
 import com.example.store.ui.details.DetailsScreen
 import com.example.store.ui.forgot.ForgotPasswordScreen
 import com.example.store.ui.home.HomeRootScreen
 import com.example.store.ui.newpassword.CreateNewPasswordScreen
 import com.example.store.ui.onboard.OnboardScreen
+import com.example.store.ui.orderdetail.OrderDetailScreen
 import com.example.store.ui.register.RegisterScreen
 import com.example.store.ui.signin.SignInScreen
 import com.example.store.ui.verification.VerificationScreen
 
-/** Граф навигации приложения. Дата: 05.03.2026, Автор: Бубнов Никита */
+/** Граф навигации. Дата: 06.03.2026, Автор: Бубнов Никита */
 @Composable
 fun AppNavGraph(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
@@ -94,9 +95,9 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
 
         composable(Screen.HomeRoot.route) {
             HomeRootScreen(
-                onOpenDetails = { productId ->
-                    navController.navigate(Screen.Details.createRoute(productId))
-                }
+                onOpenDetails = { id -> navController.navigate(Screen.Details.createRoute(id)) },
+                onOpenCart = { navController.navigate(Screen.Cart.route) },
+                onOpenOrderDetail = { orderId -> navController.navigate(Screen.OrderDetail.createRoute(orderId)) }
             )
         }
 
@@ -105,8 +106,34 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
             arguments = listOf(navArgument("productId") { type = NavType.StringType })
         ) { entry ->
             val productId = entry.arguments?.getString("productId").orEmpty()
-            DetailsScreen(
-                productId = productId,
+            DetailsScreen(productId = productId, onBack = { navController.popBackStack() })
+        }
+
+        composable(Screen.Cart.route) {
+            CartScreen(
+                onBack = { navController.popBackStack() },
+                onCheckout = { navController.navigate(Screen.Checkout.route) }
+            )
+        }
+
+        composable(Screen.Checkout.route) {
+            CheckoutScreen(
+                onBack = { navController.popBackStack() },
+                onReturnToShopping = {
+                    navController.navigate(Screen.HomeRoot.route) {
+                        popUpTo(Screen.HomeRoot.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+
+        composable(
+            route = Screen.OrderDetail.route,
+            arguments = listOf(navArgument("orderId") { type = NavType.LongType })
+        ) { entry ->
+            val orderId = entry.arguments?.getLong("orderId") ?: 0L
+            OrderDetailScreen(
+                orderId = orderId,
                 onBack = { navController.popBackStack() }
             )
         }

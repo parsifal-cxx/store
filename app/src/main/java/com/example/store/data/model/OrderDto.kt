@@ -13,5 +13,6 @@ data class OrderDto(
     val phone: String? = null,
     val address: String? = null,
     @SerialName("delivery_coast") val deliveryCoast: Long? = null,
-    @SerialName("status_id") val statusId: String? = null
+    @SerialName("status_id") val statusId: String? = null,
+    @SerialName("payment_id") val paymentId: String? = null
 )

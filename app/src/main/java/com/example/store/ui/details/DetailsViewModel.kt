@@ -3,6 +3,7 @@ package com.example.store.ui.details
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.store.R
+import com.example.store.data.CartRepository
 import com.example.store.data.FavoritesRepository
 import com.example.store.data.ProductImagesRepository
 import com.example.store.data.ProductsRepository
@@ -13,7 +14,7 @@ import kotlinx.coroutines.launch
 import java.net.UnknownHostException
 import java.util.Locale
 
-/** ViewModel деталей товара. Дата: 05.03.2026, Автор: Бубнов Никита */
+/** ViewModel деталей товара. Дата: 06.03.2026, Автор: Бубнов Никита */
 class DetailsViewModel : ViewModel() {
 
     data class UiState(
@@ -23,12 +24,14 @@ class DetailsViewModel : ViewModel() {
         val categoryTitle: String = "",
         val price: String = "",
         val images: List<String> = emptyList(),
-        val isFavorite: Boolean = false
+        val isFavorite: Boolean = false,
+        val isInCart: Boolean = false
     )
 
     private val prodRepo = ProductsRepository()
     private val imgRepo = ProductImagesRepository()
     private val favRepo = FavoritesRepository()
+    private val cartRepo = CartRepository()
 
     private val _state = MutableStateFlow(UiState(loading = true))
     val state: StateFlow<UiState> = _state
@@ -56,6 +59,9 @@ class DetailsViewModel : ViewModel() {
 
             val userId = favRepo.currentUserId()
             val fav = if (userId != null) favRepo.isFavorite(userId, product.id).getOrNull() == true else false
+            val inCart = if (userId != null) {
+                cartRepo.getProductIdsInCart(userId).getOrNull().orEmpty().contains(product.id)
+            } else false
 
             _state.value = _state.value.copy(
                 loading = false,
@@ -63,7 +69,8 @@ class DetailsViewModel : ViewModel() {
                 images = images,
                 price = price,
                 categoryTitle = product.categoryId ?: "",
-                isFavorite = fav
+                isFavorite = fav,
+                isInCart = inCart
             )
         }
     }
@@ -81,6 +88,30 @@ class DetailsViewModel : ViewModel() {
             _state.value = _state.value.copy(isFavorite = !currently)
 
             val res = if (currently) favRepo.removeFromFavorite(userId, p.id) else favRepo.addToFavorite(userId, p.id)
+            if (res.isFailure) {
+                _state.value = _state.value.copy(errorRes = mapError(res.exceptionOrNull()))
+            }
+        }
+    }
+
+    fun toggleCart() {
+        viewModelScope.launch {
+            val p = _state.value.product ?: return@launch
+            val userId = cartRepo.currentUserId()
+            if (userId == null) {
+                _state.value = _state.value.copy(errorRes = R.string.error_not_authorized)
+                return@launch
+            }
+
+            val currently = _state.value.isInCart
+            _state.value = _state.value.copy(isInCart = !currently)
+
+            val res = if (currently) {
+                cartRepo.removeAll(userId, p.id)
+            } else {
+                cartRepo.inc(userId, p.id)
+            }
+
             if (res.isFailure) {
                 _state.value = _state.value.copy(errorRes = mapError(res.exceptionOrNull()))
             }

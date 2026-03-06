@@ -16,13 +16,14 @@ import coil.compose.AsyncImage
 import com.example.store.R
 import com.example.store.ui.home.HomeViewModel
 
-/** Карточка товара. Дата: 05.03.2026, Автор: Бубнов Никита */
+/** Карточка товара. Дата: 06.03.2026, Автор: Бубнов Никита */
 @Composable
 fun ProductCard(
     product: HomeViewModel.UiProduct,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    onFavoriteClick: () -> Unit
+    onFavoriteClick: () -> Unit,
+    onCartClick: () -> Unit
 ) {
     val block = colorResource(R.color.brand_block)
     val text = colorResource(R.color.brand_text)
@@ -86,9 +87,12 @@ fun ProductCard(
                     .align(Alignment.BottomEnd)
                     .size(48.dp)
                     .background(accent, RoundedCornerShape(topStart = 16.dp))
+                    .clickable(onClick = onCartClick)
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_plus),
+                    painter = painterResource(
+                        if (product.isInCart) R.drawable.ic_cart_small else R.drawable.ic_plus
+                    ),
                     contentDescription = null,
                     tint = block,
                     modifier = Modifier.align(Alignment.Center).size(20.dp)

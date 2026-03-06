@@ -3,6 +3,7 @@ package com.example.store.ui.favorite
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.store.R
+import com.example.store.data.CartRepository
 import com.example.store.data.FavoritesRepository
 import com.example.store.data.ProductImagesRepository
 import com.example.store.data.ProductsRepository
@@ -25,6 +26,7 @@ class FavoriteViewModel : ViewModel() {
     private val favRepo = FavoritesRepository()
     private val prodRepo = ProductsRepository()
     private val imgRepo = ProductImagesRepository()
+    private val cartRepo = CartRepository()
 
     private val _state = MutableStateFlow(UiState(loading = true))
     val state: StateFlow<UiState> = _state
@@ -59,6 +61,9 @@ class FavoriteViewModel : ViewModel() {
             val products = productsRes.getOrNull().orEmpty()
             val previewMap = imgRepo.getPreviewUrlsForProducts(products.map { it.id }).getOrNull().orEmpty()
 
+            // Если нужно показывать статус корзины в избранном:
+            val cartIds = cartRepo.getProductIdsInCart(userId).getOrNull().orEmpty().toSet()
+
             val ui = products.map { p ->
                 HomeViewModel.UiProduct(
                     id = p.id,
@@ -66,7 +71,8 @@ class FavoriteViewModel : ViewModel() {
                     price = String.format(Locale.US, "₽%.2f", p.cost),
                     isBestSeller = p.isBestSeller == true,
                     imageUrl = previewMap[p.id],
-                    isFavorite = true
+                    isFavorite = true,
+                    isInCart = cartIds.contains(p.id)
                 )
             }
 

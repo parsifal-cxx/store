@@ -18,7 +18,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,7 +26,7 @@ import coil.compose.AsyncImage
 import com.example.store.R
 import kotlinx.coroutines.launch
 
-/** Экран Details. Дата: 05.03.2026, Автор: Бубнов Никита */
+/** Экран Details. Дата: 06.03.2026, Автор: Бубнов Никита */
 @Composable
 fun DetailsScreen(
     productId: String,
@@ -58,8 +57,10 @@ fun DetailsScreen(
                 description = p.description,
                 images = state.images,
                 isFavorite = state.isFavorite,
+                isInCart = state.isInCart,
                 onBack = onBack,
-                onToggleFavorite = vm::toggleFavorite
+                onToggleFavorite = vm::toggleFavorite,
+                onToggleCart = vm::toggleCart
             )
         }
 
@@ -79,8 +80,10 @@ private fun DetailsContent(
     description: String,
     images: List<String>,
     isFavorite: Boolean,
+    isInCart: Boolean,
     onBack: () -> Unit,
-    onToggleFavorite: () -> Unit
+    onToggleFavorite: () -> Unit,
+    onToggleCart: () -> Unit
 ) {
     val bg = colorResource(R.color.brand_background)
     val text = colorResource(R.color.brand_text)
@@ -144,12 +147,14 @@ private fun DetailsContent(
                     contentDescription = null,
                     tint = text
                 )
-                Box(
-                    modifier = Modifier
-                        .size(8.dp)
-                        .background(colorResource(R.color.brand_red), CircleShape)
-                        .align(Alignment.TopEnd)
-                )
+                if (isInCart) {
+                    Box(
+                        modifier = Modifier
+                            .size(8.dp)
+                            .background(colorResource(R.color.brand_red), CircleShape)
+                            .align(Alignment.TopEnd)
+                    )
+                }
             }
         }
 
@@ -198,13 +203,16 @@ private fun DetailsContent(
 
         Spacer(Modifier.height(14.dp))
 
-        Text(
-            text = description,
-            style = descStyle,
-            color = sub,
-            maxLines = if (expanded) Int.MAX_VALUE else 3,
-            overflow = TextOverflow.Ellipsis
-        )
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = description,
+                style = descStyle,
+                color = sub,
+                maxLines = if (expanded) Int.MAX_VALUE else 3,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f)
+            )
+        }
 
         Spacer(Modifier.height(6.dp))
 
@@ -244,17 +252,20 @@ private fun DetailsContent(
 
             Spacer(Modifier.width(14.dp))
 
+            val btnText = if (isInCart) "Добавлено" else stringResource(R.string.details_add_to_cart)
+            val btnColor = if (isInCart) colorResource(R.color.brand_disable) else accent
+
             Button(
-                onClick = { },
+                onClick = onToggleCart,
                 modifier = Modifier
                     .height(52.dp)
                     .weight(1f),
                 shape = RoundedCornerShape(14.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = accent, contentColor = block)
+                colors = ButtonDefaults.buttonColors(containerColor = btnColor, contentColor = block)
             ) {
-                Icon(painter = painterResource(R.drawable.ic_nav_bag), contentDescription = null, tint = block)
+                Icon(painterResource(R.drawable.ic_nav_bag), contentDescription = null, tint = block)
                 Spacer(Modifier.width(10.dp))
-                Text(stringResource(R.string.details_add_to_cart), style = buttonTextStyle)
+                Text(btnText, style = buttonTextStyle)
             }
         }
     }
