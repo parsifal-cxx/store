@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.store.ui.details.DetailsScreen
 import com.example.store.ui.forgot.ForgotPasswordScreen
 import com.example.store.ui.home.HomeRootScreen
 import com.example.store.ui.newpassword.CreateNewPasswordScreen
@@ -15,7 +16,7 @@ import com.example.store.ui.register.RegisterScreen
 import com.example.store.ui.signin.SignInScreen
 import com.example.store.ui.verification.VerificationScreen
 
-/** Граф навигации приложения. Дата: 04.03.2026, Автор: Бубнов Никита */
+/** Граф навигации приложения. Дата: 05.03.2026, Автор: Бубнов Никита */
 @Composable
 fun AppNavGraph(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
@@ -92,7 +93,22 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
         }
 
         composable(Screen.HomeRoot.route) {
-            HomeRootScreen()
+            HomeRootScreen(
+                onOpenDetails = { productId ->
+                    navController.navigate(Screen.Details.createRoute(productId))
+                }
+            )
+        }
+
+        composable(
+            route = Screen.Details.route,
+            arguments = listOf(navArgument("productId") { type = NavType.StringType })
+        ) { entry ->
+            val productId = entry.arguments?.getString("productId").orEmpty()
+            DetailsScreen(
+                productId = productId,
+                onBack = { navController.popBackStack() }
+            )
         }
     }
 }

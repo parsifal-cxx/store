@@ -1,6 +1,7 @@
 package com.example.store.ui.home.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,11 +16,13 @@ import coil.compose.AsyncImage
 import com.example.store.R
 import com.example.store.ui.home.HomeViewModel
 
-/** Карточка товара Home. Дата: 05.03.2026, Автор: Бубнов Никита */
+/** Карточка товара. Дата: 05.03.2026, Автор: Бубнов Никита */
 @Composable
 fun ProductCard(
     product: HomeViewModel.UiProduct,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    onFavoriteClick: () -> Unit
 ) {
     val block = colorResource(R.color.brand_block)
     val text = colorResource(R.color.brand_text)
@@ -28,7 +31,7 @@ fun ProductCard(
     val hint = colorResource(R.color.brand_hint)
 
     Surface(
-        modifier = modifier,
+        modifier = modifier.clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
         color = block
     ) {
@@ -39,13 +42,16 @@ fun ProductCard(
                     .size(28.dp)
                     .align(Alignment.TopStart),
                 shape = CircleShape,
-                color = block
+                color = block,
+                onClick = onFavoriteClick
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_heart_outline),
+                        painter = painterResource(
+                            if (product.isFavorite) R.drawable.ic_heart_filled else R.drawable.ic_heart_outline
+                        ),
                         contentDescription = null,
-                        tint = hint,
+                        tint = if (product.isFavorite) colorResource(R.color.brand_red) else hint,
                         modifier = Modifier.size(16.dp)
                     )
                 }
@@ -67,25 +73,12 @@ fun ProductCard(
                     .padding(start = 12.dp, end = 52.dp, bottom = 12.dp)
             ) {
                 if (product.isBestSeller) {
-                    Text(
-                        text = "BEST SELLER",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = accent
-                    )
+                    Text("BEST SELLER", style = MaterialTheme.typography.labelSmall, color = accent)
                     Spacer(Modifier.height(6.dp))
                 }
-
-                Text(
-                    text = product.title,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = text
-                )
+                Text(product.title, style = MaterialTheme.typography.bodyMedium, color = text)
                 Spacer(Modifier.height(6.dp))
-                Text(
-                    text = product.price,
-                    style = MaterialTheme.typography.labelMedium,
-                    color = subText
-                )
+                Text(product.price, style = MaterialTheme.typography.labelMedium, color = subText)
             }
 
             Box(
@@ -98,9 +91,7 @@ fun ProductCard(
                     painter = painterResource(R.drawable.ic_plus),
                     contentDescription = null,
                     tint = block,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .size(20.dp)
+                    modifier = Modifier.align(Alignment.Center).size(20.dp)
                 )
             }
         }
